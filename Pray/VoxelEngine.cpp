@@ -6,7 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 VoxelEngine::VoxelEngine(int width, int height)
-    : cube(glm::vec3(0.0f, 0.0f, -3.0f), 0) // Create cube at Z = -3 with textureId 0
+   // : cube(glm::vec3(0.0f, 0.0f, -3.0f), 0) // Create cube at Z = -3 with textureId 0
+   //need to initalise chunk here later
 {
     // Create the window
     window = new Window(width, height, "Voxel Engine");
@@ -79,7 +80,7 @@ void VoxelEngine::run() {
 
         glm::mat4 view = player->getCamera().getViewMatrix();
 
-        renderer->drawCube(cube, *shader, view, projection);
+       // renderer->drawCube(cube, *shader, view, projection);
 
         window->swapBuffers();
         window->pollEvents();

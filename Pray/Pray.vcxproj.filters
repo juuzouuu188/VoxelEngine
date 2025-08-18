@@ -22,6 +22,21 @@
     <Filter Include="Source Files\Entity">
       <UniqueIdentifier>{f371e8ec-fdd9-4ca1-a8ff-1af27785dc96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Render">
+      <UniqueIdentifier>{e7dfe2f8-87b7-43c2-901f-e108c8000239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering Parts">
+      <UniqueIdentifier>{bb8df439-06c6-458f-a59f-a348f8437b73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{033ed967-5e62-4d80-a38a-f9dfa676557a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render\Mesh Parts">
+      <UniqueIdentifier>{4eceb3e7-f3d8-4de8-8c1b-3ca3e5fb0afc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering Parts\Mesh Parts">
+      <UniqueIdentifier>{e9b1b35c-d68c-4009-9657-4c7b5a2582d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -33,38 +48,50 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MasterRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="VAO.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VBO.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VBO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EBO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VAO.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VoxelEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="MasterRenderer.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="EBO.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="VAO.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="VBO.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="VBO.h">
+      <Filter>Header Files\Rendering Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="VAO.h">
+      <Filter>Header Files\Rendering Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="stb.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Render\Mesh Parts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,18 +99,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MasterRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EBO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -97,6 +112,33 @@
     </ClInclude>
     <ClInclude Include="InputStruct.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Header Files\Rendering Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Header Files\Rendering Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="MasterRenderer.h">
+      <Filter>Header Files\Rendering Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Rendering Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\Rendering Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="EBO.h">
+      <Filter>Header Files\Rendering Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Rendering Parts\Mesh Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Header Files\Rendering Parts\Mesh Parts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

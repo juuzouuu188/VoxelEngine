@@ -26,6 +26,7 @@ static unsigned int indices[] = {
     0, 1, 5, 5, 4, 0   // bottom
 };
 
+
 MasterRenderer::MasterRenderer() : vao(), vbo(nullptr), ebo(nullptr) {
 	initCube();
 }
@@ -49,27 +50,35 @@ void MasterRenderer::initCube() {
     vao.Unbind();
 }
 
-void MasterRenderer::drawCube(const Cube& cube, Shader& shader, const glm::mat4& view, const glm::mat4& projection){
+void MasterRenderer::drawCube(const glm::vec3& position, CubeType type, Shader& shader, const glm::mat4& view, const glm::mat4& projection) {
     shader.Activate();
-    // static rotation variable persists across frames
-    static float rotation = 0.0f;
-    rotation += 0.0001f; // adjust speed as desired
 
-    // Create model matrix with translation and rotation
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), cube.getPosition());
-    model = glm::rotate(model, rotation, glm::vec3(0.0f, 1.0f, 0.0f)); // rotate around Y-axis
-
-    // Pass matrices to shader
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
     shader.setMat4("model", model);
     shader.setMat4("view", view);
     shader.setMat4("projection", projection);
 
-    // Draw the cube
     vao.Bind();
     ebo->Bind();
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     vao.Unbind();
 }
+
+// Draw all cubes in a chunk
+void MasterRenderer::drawChunk(const Chunk& chunk, const glm::vec3& chunkPos, Shader& shader, const glm::mat4& view, const glm::mat4& projection) {
+    Cube*** cubes = chunk.getCubes();
+
+    for (int x = 0; x < Chunk::CHUNK_SIZE; ++x) {
+        for (int y = 0; y < Chunk::CHUNK_SIZE; ++y) {
+            for (int z = 0; z < Chunk::CHUNK_SIZE; ++z) {
+                // maybe check to skip air/"empty"
+                glm::vec3 worldPos = chunkPos + glm::vec3(x, y, z);
+                drawCube(worldPos, cubes[x][y][z].getType(), shader, view, projection);
+            }
+        }
+    }
+}
+
 
 
 
