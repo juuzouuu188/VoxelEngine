@@ -34,6 +34,9 @@ public:
     CubeType getType() const { return m_type; }
     void setType(CubeType type) { m_type = type; }
 
+    // Helper to check if this cube is "empty/air"
+    bool isAir() const { return m_type == CubeType_Air || !m_active; }
+
 private:
     bool m_active;     // whether this cube should be rendered
     CubeType m_type;   // type of block (determines texture)

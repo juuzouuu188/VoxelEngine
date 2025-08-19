@@ -11,7 +11,12 @@ class Chunk {
 public:
 	Chunk();
 	~Chunk();
+
+	bool isDirty;
 	void Update(float dt);
+	bool checkDirty() const { return isDirty; }
+	void clearDirty() { isDirty = false; }
+
 	static const int CHUNK_SIZE = 16;
 
 	// Just data access
@@ -21,6 +26,5 @@ private: // The Cubes data
 	Cube*** m_pCubes;
 
 };
-
 
 #endif

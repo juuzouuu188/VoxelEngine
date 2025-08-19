@@ -37,6 +37,12 @@
     <Filter Include="Header Files\Rendering Parts\Mesh Parts">
       <UniqueIdentifier>{e9b1b35c-d68c-4009-9657-4c7b5a2582d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Rendering Parts\Chunk Parts">
+      <UniqueIdentifier>{0311c4fe-4a6e-4ee4-a94f-631211aba9b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render\Chunk Parts">
+      <UniqueIdentifier>{43acf4ae-8966-4ecb-85ce-d30fc258b6d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -93,6 +99,12 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Render\Mesh Parts</Filter>
     </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Source Files\Render\Mesh Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkRenderer.cpp">
+      <Filter>Source Files\Render\Chunk Parts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VoxelEngine.h">
@@ -112,12 +124,6 @@
     </ClInclude>
     <ClInclude Include="InputStruct.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chunk.h">
-      <Filter>Header Files\Rendering Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files\Rendering Parts</Filter>
     </ClInclude>
     <ClInclude Include="MasterRenderer.h">
       <Filter>Header Files\Rendering Parts</Filter>
@@ -139,6 +145,15 @@
     </ClInclude>
     <ClInclude Include="MeshRenderer.h">
       <Filter>Header Files\Rendering Parts\Mesh Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkRenderer.h">
+      <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

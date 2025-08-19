@@ -1,6 +1,7 @@
 #include "Chunk.h"
 
 Chunk::Chunk() { //create the blocks
+	isDirty = false;
 	m_pCubes = new Cube **[CHUNK_SIZE];
 	for (int i = 0; i < CHUNK_SIZE; i++ ) {
 		m_pCubes[i] = new Cube * [CHUNK_SIZE];
@@ -23,3 +24,4 @@ Chunk::~Chunk() { // Delete the blocks
 void Chunk::Update(float dt) {
 	//in future this would hold logic for updating the chunk, like generating terrain or handling block changes
 };
+

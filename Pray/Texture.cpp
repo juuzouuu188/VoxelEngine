@@ -1,9 +1,11 @@
 #include"Texture.h"
 
-Texture::Texture(const char* image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType)
+Texture::Texture(const char* image, const std::string& typeName, GLenum texType, GLenum slot, GLenum format, GLenum pixelType)
 {
 	// Assigns the type of the texture ot the texture object
-	type = texType;
+	// assign the fields here instead of in initializer list
+	this->type = typeName;
+	this->texType = texType;
 
 	// Stores the width, height, and the number of color channels of the image
 	int widthImg, heightImg, numColCh;
@@ -52,17 +54,15 @@ void Texture::texUnit(Shader& shader, const char* uniform, GLuint unit)
 	glUniform1i(texUni, unit);
 }
 
-void Texture::Bind()
-{
-	glBindTexture(type, ID);
+void Texture::Bind(GLuint slot) const {
+	glActiveTexture(GL_TEXTURE0 + slot);
+	glBindTexture(texType, ID);
 }
 
-void Texture::Unbind()
-{
-	glBindTexture(type, 0);
+void Texture::Unbind() const {
+    glBindTexture(texType, 0);
 }
 
-void Texture::Delete()
-{
-	glDeleteTextures(1, &ID);
+void Texture::Delete() {
+    glDeleteTextures(1, &ID);
 }

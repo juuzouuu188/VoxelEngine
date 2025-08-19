@@ -9,16 +9,19 @@
 class Texture
 {
 public:
+	std::string type; // "diffuse", "specular", etc.
 	GLuint ID;
-	GLenum type;
-	Texture(const char* image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType);
+	GLenum texType;
+	
+	
+	Texture(const char* image, const std::string& typeName, GLenum texType, GLenum slot, GLenum format, GLenum pixelType);
 
 	// Assigns a texture unit to a texture
 	void texUnit(Shader& shader, const char* uniform, GLuint unit);
 	// Binds a texture
-	void Bind();
+	void Bind(GLuint slot = 0) const;
 	// Unbinds a texture
-	void Unbind();
+	void Unbind() const;
 	// Deletes a texture
 	void Delete();
 };

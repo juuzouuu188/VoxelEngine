@@ -25,6 +25,7 @@ public:
 	std::vector<Texture> textures;
 
 	VAO vao;
+	VBO vbo;
 	EBO ebo;
 
 	// Initializes the mesh
@@ -32,9 +33,6 @@ public:
 
 	//support other advanced features later
 	
-
-	//this could be in some other class
-	void Draw(Shader& shader);
 };
 
 
