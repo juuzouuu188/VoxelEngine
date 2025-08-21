@@ -5,5 +5,7 @@ in vec2 TexCoord;
 uniform sampler2D texture1;
 
 void main() {
-    FragColor = texture(texture1, TexCoord);
+  FragColor = texture(texture1, TexCoord);
+  //this is for debugging
+   //FragColor = vec4(0.0, 1.0, 0.0, 1.0); // RGBA: green
 }

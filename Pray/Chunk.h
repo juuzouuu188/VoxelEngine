@@ -22,6 +22,9 @@ public:
 	// Just data access
 	Cube*** getCubes() const { return m_pCubes; }
 
+	//debugging purposes
+	void setUpSphere();
+
 private: // The Cubes data
 	Cube*** m_pCubes;
 

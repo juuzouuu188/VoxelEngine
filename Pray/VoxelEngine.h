@@ -17,8 +17,8 @@ private:
 	MasterRenderer* renderer;
 
 	Shader* shader;
-	//will change to cubes then change to chunks etc
-	Cube cube;
+	//will change from chunk to chunk manager etc
+	Chunk* chunk;
 	Player* player;
 
 	InputState inputState;

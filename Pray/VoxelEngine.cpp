@@ -3,22 +3,25 @@
 #include "MasterRenderer.h"
 #include "Player.h"
 #include "InputStruct.h"
+#include "Chunk.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 VoxelEngine::VoxelEngine(int width, int height)
-   // : cube(glm::vec3(0.0f, 0.0f, -3.0f), 0) // Create cube at Z = -3 with textureId 0
-   //need to initalise chunk here later
 {
-    // Create the window
     window = new Window(width, height, "Voxel Engine");
 
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
+    ChunkRenderer::LoadCubeTextures(); // load all shared textures once
 
     // Initialize shader and renderer
     shader = new Shader("Cube.vert", "Cube.frag");
     renderer = new MasterRenderer();
-    player = new Player(glm::vec3(0.0f, 1.0f, 3.0f));
+    player = new Player(glm::vec3(10.0f, 1.0f, 5.0f));
+
+    //this is for debugging purposes of one chunk
+    chunk = new Chunk();
+    chunk->setUpSphere();
 }
 
 VoxelEngine::~VoxelEngine() {
@@ -58,11 +61,8 @@ void VoxelEngine::processInput(float dt) {
 void VoxelEngine::run() {
     // Setup view and projection matrices once
     glm::mat4 projection = glm::perspective(glm::radians(45.0f),
-        (float)800 / (float)600,
+        (float)1280 / (float)720,
         0.1f, 100.0f);
-
-    //glm::mat4 view = glm::mat4(1.0f); // camera at origin looking down -Z
-  //  view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
 
 
     float lastFrame = 0.0f;
@@ -74,13 +74,13 @@ void VoxelEngine::run() {
         lastFrame = currentFrame;
 
         processInput(deltaTime);  // pass deltaTime to player update
-
+ 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 view = player->getCamera().getViewMatrix();
 
-       // renderer->drawCube(cube, *shader, view, projection);
+        renderer->drawChunk(chunk, shader, view, projection);
 
         window->swapBuffers();
         window->pollEvents();

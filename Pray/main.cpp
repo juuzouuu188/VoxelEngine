@@ -2,7 +2,7 @@
 
 
 int main() {
-	VoxelEngine engine(800, 600);
+	VoxelEngine engine(1280, 720);
 	engine.run();
 	return 0;
 }

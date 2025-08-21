@@ -149,7 +149,10 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VAO.h" />
-    <ClCompile Include="VBO.cpp" />
+    <ClCompile Include="VBO.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="VBO.h" />
     <ClCompile Include="VoxelEngine.cpp" />
     <ClCompile Include="Window.cpp" />

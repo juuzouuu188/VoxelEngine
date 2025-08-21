@@ -16,6 +16,7 @@ public:
 	void setRotation(float angle, const glm::vec3& axis);
 
 	// Draws the mesh with its transform applied
+	//these are supplied by the camera
 	void drawMesh(Shader& shader, const glm::mat4& view, const glm::mat4& projection);
 
 private:

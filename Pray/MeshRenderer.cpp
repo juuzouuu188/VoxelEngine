@@ -36,8 +36,12 @@ void MeshRenderer::drawMesh(Shader& shader, const glm::mat4& view, const glm::ma
 
     // bind textures if you’re using them
     for (size_t i = 0; i < mesh->textures.size(); i++) {
-        mesh->textures[i].Bind(i);
+        if (!mesh->textures[i]) continue; // skip null textures
+        mesh->textures[i]->Bind(i);  // note the pointer
+       // mesh->textures[0]->Bind();  
+        //might adjust this to string for later
         shader.setInt("texture" + std::to_string(i), (int)i);
+       //shader.setInt("texture1", 0);
     }
 
     glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
