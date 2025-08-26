@@ -26,10 +26,10 @@ public:
 		if (!cubeTextures.empty()) return; // already loaded
 		//ensure Enum type matches the correct number of channels in the texture
 		cubeTextures[CubeType_Grass] = std::make_unique<Texture>("Textures/grass.jpg", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
-		cubeTextures[CubeType_Dirt] = std::make_unique<Texture>("textures/dirt.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-		cubeTextures[CubeType_Stone] = std::make_unique<Texture>("textures/stone.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-		cubeTextures[CubeType_Wood] = std::make_unique<Texture>("textures/wood.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-		cubeTextures[CubeType_Sand] = std::make_unique<Texture>("sand.jpeg", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
+		cubeTextures[CubeType_Dirt] = std::make_unique<Texture>("Textures/dirt.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+		cubeTextures[CubeType_Stone] = std::make_unique<Texture>("Textures/stone.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+		cubeTextures[CubeType_Wood] = std::make_unique<Texture>("Textures/wood.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+		cubeTextures[CubeType_Sand] = std::make_unique<Texture>("Textures/sand.jpeg", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
 	}
 
 

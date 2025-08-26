@@ -24,7 +24,7 @@ public:
 
 	//debugging purposes
 	void setUpSphere();
-	static constexpr float CUBE_SIZE = 0.1f; // adjust for mini cubes
+	static constexpr float CUBE_SIZE = 0.5; // adjust for mini cubes
 
 private: // The Cubes data
 	Cube*** m_pCubes;

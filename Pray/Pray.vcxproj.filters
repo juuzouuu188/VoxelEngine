@@ -84,10 +84,10 @@
     <ClCompile Include="Chunk.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="VBO.h">
+    <ClCompile Include="include\VBO.h">
       <Filter>Header Files\Rendering Parts</Filter>
     </ClCompile>
-    <ClCompile Include="VAO.h">
+    <ClCompile Include="include\VAO.h">
       <Filter>Header Files\Rendering Parts</Filter>
     </ClCompile>
     <ClCompile Include="stb.cpp">
@@ -107,52 +107,52 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VoxelEngine.h">
+    <ClInclude Include="include\VoxelEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
+    <ClInclude Include="include\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="include\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="include\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="include\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputStruct.h">
+    <ClInclude Include="include\InputStruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MasterRenderer.h">
+    <ClInclude Include="include\MasterRenderer.h">
       <Filter>Header Files\Rendering Parts</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
+    <ClInclude Include="include\Shader.h">
       <Filter>Header Files\Rendering Parts</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="include\Texture.h">
       <Filter>Header Files\Rendering Parts</Filter>
     </ClInclude>
-    <ClInclude Include="EBO.h">
+    <ClInclude Include="include\EBO.h">
       <Filter>Header Files\Rendering Parts</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
+    <ClInclude Include="include\Mesh.h">
       <Filter>Header Files\Rendering Parts\Mesh Parts</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
+    <ClInclude Include="include\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MeshRenderer.h">
+    <ClInclude Include="include\MeshRenderer.h">
       <Filter>Header Files\Rendering Parts\Mesh Parts</Filter>
     </ClInclude>
-    <ClInclude Include="Chunk.h">
+    <ClInclude Include="include\Chunk.h">
       <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
+    <ClInclude Include="include\Cube.h">
       <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
     </ClInclude>
-    <ClInclude Include="ChunkRenderer.h">
+    <ClInclude Include="include\ChunkRenderer.h">
       <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
     </ClInclude>
   </ItemGroup>
