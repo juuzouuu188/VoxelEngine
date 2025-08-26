@@ -2,7 +2,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Entity.h"
-#include "Camera.h"
+#include "Player/Camera.h"
 
 class Player: public Entity{
 

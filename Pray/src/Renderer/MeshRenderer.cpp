@@ -1,4 +1,4 @@
-#include "MeshRenderer.h"
+#include "Renderer/MeshRenderer.h"
 
 
 void MeshRenderer::setPosition(const glm::vec3& pos) {

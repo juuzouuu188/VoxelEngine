@@ -1,9 +1,9 @@
-#include "VoxelEngine.h"
-#include "Window.h"
-#include "MasterRenderer.h"
-#include "Player.h"
+#include "Engine/VoxelEngine.h"
+#include "Engine/Window.h"
+#include "Renderer/MasterRenderer.h"
+#include "Player/Player.h"
 #include "InputStruct.h"
-#include "Chunk.h"
+#include "World/Chunk.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 VoxelEngine::VoxelEngine(int width, int height)
@@ -15,7 +15,7 @@ VoxelEngine::VoxelEngine(int width, int height)
     ChunkRenderer::LoadCubeTextures(); // load all shared textures once
 
     // Initialize shader and renderer
-    shader = new Shader("Cube.vert", "Cube.frag");
+    shader = new Shader("shaders/Cube.vert", "shaders/Cube.frag");
     renderer = new MasterRenderer();
     player = new Player(glm::vec3(10.0f, 1.0f, 5.0f));
 

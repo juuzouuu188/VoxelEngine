@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "Player/Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 Camera::Camera(glm::vec3 startPos)

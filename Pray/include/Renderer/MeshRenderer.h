@@ -1,5 +1,5 @@
 #pragma once
-#include "Mesh.h"
+#include "Renderer/Mesh.h"
 #include "Shader.h"
 #include <glm/gtc/matrix_transform.hpp>
 

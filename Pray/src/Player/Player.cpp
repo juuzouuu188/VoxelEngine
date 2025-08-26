@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "Player/Player.h"
 
 void Player::update(float dt, const InputState& input) {
     glm::vec3 moveDir(0.0f);

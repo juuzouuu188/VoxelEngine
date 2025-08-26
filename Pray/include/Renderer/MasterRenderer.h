@@ -2,7 +2,7 @@
 #ifndef MASTERRENDERER_H
 #define MASTERRENDERER_H
 
-#include "ChunkRenderer.h"
+#include "Renderer/ChunkRenderer.h"
 #include "MeshRenderer.h"
 #include "Shader.h"
 #include <glm/glm.hpp>

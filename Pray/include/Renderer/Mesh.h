@@ -7,9 +7,9 @@
 
 #include "VAO.h"
 #include "VBO.h"
-#include "EBO.h"
-#include "Cube.h"
-#include "Chunk.h"
+#include "Renderer/EBO.h"
+#include "World/Cube.h"
+#include "World/Chunk.h"
 #include "Vertex.h"
 #include "Texture.h"
 #include <cstddef>

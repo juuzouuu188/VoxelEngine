@@ -1,6 +1,6 @@
 #include "Window.h"
-#include "MasterRenderer.h"
-#include "Player.h"
+#include "Renderer/MasterRenderer.h"
+#include "Player/Player.h"
 #include "InputStruct.h"
 
 //#include world in future

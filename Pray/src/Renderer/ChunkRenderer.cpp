@@ -1,4 +1,4 @@
-#include "ChunkRenderer.h"
+#include "Renderer/ChunkRenderer.h"
 
 ChunkRenderer::ChunkRenderer(Chunk* chunk, Shader* shader)
     : chunk(chunk), shader(shader)
