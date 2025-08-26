@@ -27,14 +27,15 @@ void Chunk::Update(float dt) {
 
 void Chunk::setUpSphere() {
     int center = CHUNK_SIZE / 2;
-    float radius = CHUNK_SIZE / 2.0f;
+    float radius = (CHUNK_SIZE / 2.0f) * CUBE_SIZE; // scale radius by cube size
 
     for (int x = 0; x < CHUNK_SIZE; ++x) {
         for (int y = 0; y < CHUNK_SIZE; ++y) {
             for (int z = 0; z < CHUNK_SIZE; ++z) {
-                float dx = x - center;
-                float dy = y - center;
-                float dz = z - center;
+                // Scale positions by cube size
+                float dx = (x - center) * CUBE_SIZE;
+                float dy = (y - center) * CUBE_SIZE;
+                float dz = (z - center) * CUBE_SIZE;
 
                 // Distance from the center
                 float distance = sqrt(dx * dx + dy * dy + dz * dz);
@@ -59,4 +60,5 @@ void Chunk::setUpSphere() {
 
     isDirty = true; // Mark chunk as needing mesh rebuild
 }
+
 

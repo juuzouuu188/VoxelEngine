@@ -6,21 +6,19 @@ ChunkRenderer::ChunkRenderer(Chunk* chunk, Shader* shader)
     BuildMeshes(); // generate meshes when constructed
 }
 void ChunkRenderer::BuildMeshes() {
-    //Currently hybrid approach, between multiple meshes and texture atlas, 
-
-    
+    // Currently hybrid approach, between multiple meshes and texture atlas
     meshes.clear();
 
     Cube*** cubes = chunk->getCubes();
     int CHUNK_SIZE = Chunk::CHUNK_SIZE;
+    float cubeSize = Chunk::CUBE_SIZE; // scale cubes
 
     // Step 1: Group cubes by type
     std::unordered_map<CubeType, std::vector<Vertex>> verticesByType;
     std::unordered_map<CubeType, std::vector<GLuint>> indicesByType;
-
     std::unordered_map<CubeType, GLuint> indexCountByType;
 
-    //this is naive, will make greedy algo later
+    // this is naive, will make greedy algo later
     for (int x = 0; x < CHUNK_SIZE; ++x) {
         for (int y = 0; y < CHUNK_SIZE; ++y) {
             for (int z = 0; z < CHUNK_SIZE; ++z) {
@@ -31,7 +29,9 @@ void ChunkRenderer::BuildMeshes() {
                 if (indexCountByType.find(type) == indexCountByType.end())
                     indexCountByType[type] = 0;
 
+                // Scale cube position
                 glm::vec3 pos(x, y, z);
+                pos *= cubeSize;
 
                 auto addFace = [&](const glm::vec3& normal) {
                     int nx = x + (int)normal.x;
@@ -48,40 +48,40 @@ void ChunkRenderer::BuildMeshes() {
                     if (!neighborExists) {
                         glm::vec3 p0, p1, p2, p3;
                         if (normal.x == 1) {       // +X face
-                            p0 = pos + glm::vec3(1, 0, 0);
-                            p1 = pos + glm::vec3(1, 0, 1);
-                            p2 = pos + glm::vec3(1, 1, 1);
-                            p3 = pos + glm::vec3(1, 1, 0);
+                            p0 = pos + glm::vec3(cubeSize, 0, 0);
+                            p1 = pos + glm::vec3(cubeSize, 0, cubeSize);
+                            p2 = pos + glm::vec3(cubeSize, cubeSize, cubeSize);
+                            p3 = pos + glm::vec3(cubeSize, cubeSize, 0);
                         }
                         else if (normal.x == -1) { // -X face
                             p0 = pos + glm::vec3(0, 0, 0);
-                            p1 = pos + glm::vec3(0, 1, 0);
-                            p2 = pos + glm::vec3(0, 1, 1);
-                            p3 = pos + glm::vec3(0, 0, 1);
+                            p1 = pos + glm::vec3(0, cubeSize, 0);
+                            p2 = pos + glm::vec3(0, cubeSize, cubeSize);
+                            p3 = pos + glm::vec3(0, 0, cubeSize);
                         }
                         else if (normal.y == 1) {  // +Y face
-                            p0 = pos + glm::vec3(0, 1, 0);
-                            p1 = pos + glm::vec3(1, 1, 0);
-                            p2 = pos + glm::vec3(1, 1, 1);
-                            p3 = pos + glm::vec3(0, 1, 1);
+                            p0 = pos + glm::vec3(0, cubeSize, 0);
+                            p1 = pos + glm::vec3(cubeSize, cubeSize, 0);
+                            p2 = pos + glm::vec3(cubeSize, cubeSize, cubeSize);
+                            p3 = pos + glm::vec3(0, cubeSize, cubeSize);
                         }
                         else if (normal.y == -1) { // -Y face
                             p0 = pos + glm::vec3(0, 0, 0);
-                            p1 = pos + glm::vec3(0, 0, 1);
-                            p2 = pos + glm::vec3(1, 0, 1);
-                            p3 = pos + glm::vec3(1, 0, 0);
+                            p1 = pos + glm::vec3(0, 0, cubeSize);
+                            p2 = pos + glm::vec3(cubeSize, 0, cubeSize);
+                            p3 = pos + glm::vec3(cubeSize, 0, 0);
                         }
                         else if (normal.z == 1) {  // +Z face
-                            p0 = pos + glm::vec3(0, 0, 1);
-                            p1 = pos + glm::vec3(0, 1, 1);
-                            p2 = pos + glm::vec3(1, 1, 1);
-                            p3 = pos + glm::vec3(1, 0, 1);
+                            p0 = pos + glm::vec3(0, 0, cubeSize);
+                            p1 = pos + glm::vec3(0, cubeSize, cubeSize);
+                            p2 = pos + glm::vec3(cubeSize, cubeSize, cubeSize);
+                            p3 = pos + glm::vec3(cubeSize, 0, cubeSize);
                         }
                         else if (normal.z == -1) { // -Z face
                             p0 = pos + glm::vec3(0, 0, 0);
-                            p1 = pos + glm::vec3(1, 0, 0);
-                            p2 = pos + glm::vec3(1, 1, 0);
-                            p3 = pos + glm::vec3(0, 1, 0);
+                            p1 = pos + glm::vec3(cubeSize, 0, 0);
+                            p2 = pos + glm::vec3(cubeSize, cubeSize, 0);
+                            p3 = pos + glm::vec3(0, cubeSize, 0);
                         }
 
                         glm::vec3 color(1.0f, 1.0f, 1.0f);
@@ -126,6 +126,8 @@ void ChunkRenderer::BuildMeshes() {
             meshes.push_back(std::make_unique<Mesh>(verts, inds, tex));
     }
 }
+
+
 
 void ChunkRenderer::Draw(MeshRenderer& meshRenderer, const glm::mat4& view, const glm::mat4& projection) {
 
