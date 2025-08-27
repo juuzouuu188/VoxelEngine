@@ -18,6 +18,7 @@ private:
 
 	Shader* shader;
 	//will change from chunk to chunk manager etc
+	ChunkManager* chunkManager;
 	Chunk* chunk;
 	Player* player;
 

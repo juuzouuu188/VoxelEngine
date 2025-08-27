@@ -1,8 +1,9 @@
-#pragma once
+ #pragma once
 #ifndef MASTERRENDERER_H
 #define MASTERRENDERER_H
 
 #include "Renderer/ChunkRenderer.h"
+#include "World/ChunkManager.h"
 #include "MeshRenderer.h"
 #include "Shader.h"
 #include <glm/glm.hpp>
@@ -16,13 +17,12 @@ public:
 
     //will change this to have chunk manager take it later
 
-    void drawWorld(); //will add camera position andview vectors later
+    void drawWorld(const std::vector<std::shared_ptr<Chunk>> renderList, Shader* shader, const glm::mat4& view, const glm::mat4& projection);
     void drawChunk(Chunk* chunk, Shader* shader, const glm::mat4& view, const glm::mat4& projection);
 
 private:
-    //chunk manager will be here in future
     MeshRenderer meshRenderer; // Reusable mesh renderer for all meshes
-   // ChunkRenderer chunkRenderer; this will be a chunk manager for multiple chunks when we have a chunk manager
+    std::vector<std::shared_ptr<ChunkRenderer>> chunkRenderers;
     //    void drawChunk(Chunk* chunk, Shader* shader, const glm::mat4& view, const glm::mat4& projection);
 };
 

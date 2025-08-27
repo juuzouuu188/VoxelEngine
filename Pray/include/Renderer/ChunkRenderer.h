@@ -35,6 +35,7 @@ public:
 
 	// Draws the chunk using the shared mesh renderer
 	void Draw(MeshRenderer& meshRenderer,const glm::mat4& view, const glm::mat4& projection);
+	Chunk* getChunk() const { return chunk;  }
 
 private:
 	//private cause each chunk renderer handles one chunk

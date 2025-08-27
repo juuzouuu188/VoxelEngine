@@ -138,6 +138,7 @@
     <ClCompile Include="src\Player\Camera.cpp" />
     <ClCompile Include="src\World\Chunk.cpp" />
     <ClCompile Include="src\Renderer\ChunkRenderer.cpp" />
+    <ClCompile Include="src\World\ChunkManager.cpp" />
     <ClCompile Include="src\World\Cube.cpp" />
     <ClCompile Include="src\Renderer\EBO.cpp" />
     <ClCompile Include="src\ThirdParty\glad.c" />
@@ -163,6 +164,7 @@
     <ClInclude Include="include\Player\Camera.h" />
     <ClInclude Include="include\World\Chunk.h" />
     <ClInclude Include="include\Renderer\ChunkRenderer.h" />
+    <ClInclude Include="include\World\ChunkManager.h" />
     <ClInclude Include="include\World\Cube.h" />
     <ClInclude Include="include\Renderer\EBO.h" />
     <ClInclude Include="include\Entity.h" />

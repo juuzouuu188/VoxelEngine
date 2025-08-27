@@ -18,9 +18,12 @@ public:
 	void clearDirty() { isDirty = false; }
 
 	static const int CHUNK_SIZE = 16;
+	static const int CHUNK_HEIGHT = 256;
 
 	// Just data access
 	Cube*** getCubes() const { return m_pCubes; }
+	bool IsLoaded() const { return isLoaded; }
+	void setLoaded(bool loaded) { isLoaded = loaded; }
 
 	//debugging purposes
 	void setUpSphere();
@@ -28,7 +31,7 @@ public:
 
 private: // The Cubes data
 	Cube*** m_pCubes;
-
+	bool isLoaded = false;
 };
 
 #endif
