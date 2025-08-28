@@ -24,6 +24,7 @@ public:
 	Cube*** getCubes() const { return m_pCubes; }
 	bool IsLoaded() const { return isLoaded; }
 	void setLoaded(bool loaded) { isLoaded = loaded; }
+	void Load();
 
 	//debugging purposes
 	void setUpSphere();

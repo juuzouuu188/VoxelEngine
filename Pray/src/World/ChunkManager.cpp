@@ -52,15 +52,25 @@ std::shared_ptr<Chunk> ChunkManager::GetOrCreateChunk(int x, int z) {
     return chunk;
 }
 
-// --- Pipeline stages (simplified since ChunkRenderer handles meshes) ---
+// --- Pipeline stages ---
 void ChunkManager::UpdateLoadList() {
-    int loadedThisFrame = 0;
-    for (auto& chunk : m_loadList) {
-        if (loadedThisFrame >= MAX_CHUNKS_PER_FRAME) break;
-        // For now, loading just marks it ready
-        loadedThisFrame++;
-        m_forceVisibilityUpdate = true;
+    int lNumOfChunksLoaded = 0;
+
+    // Iterate through the load list, but only load up to ASYNC_NUM_CHUNKS_PER_FRAME
+    for (auto it = m_loadList.begin();
+        it != m_loadList.end() && lNumOfChunksLoaded != ASYNC_NUM_CHUNKS_PER_FRAME;
+        ++it)
+    {
+        std::shared_ptr<Chunk> pChunk = *it; // Dereference iterator
+
+        if (!pChunk->IsLoaded()) {
+            pChunk->Load();
+            lNumOfChunksLoaded++;
+            m_forceVisibilityUpdate = true;
+        }
     }
+
+    // Clear the load list at the end of the frame
     m_loadList.clear();
 }
 
@@ -82,13 +92,6 @@ void ChunkManager::UpdateUnloadList() {
 
 void ChunkManager::UpdateVisibilityList(const glm::vec3& cameraPos) {
     m_visibilityList.clear();
-    float maxDistance = static_cast<float>(renderDistance * Chunk::CHUNK_SIZE);
-
-    for (auto& [coords, chunk] : chunks) {
-        glm::vec3 center = chunk->getCubes() ? glm::vec3(coords.x, 0, coords.z) : glm::vec3(0);
-        float dist = glm::length(cameraPos - center);
-        if (dist <= maxDistance) m_visibilityList.push_back(chunk);
-    }
 
     m_forceVisibilityUpdate = true;
 }

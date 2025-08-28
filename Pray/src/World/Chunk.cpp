@@ -1,15 +1,14 @@
 #include "World/Chunk.h"
 
-Chunk::Chunk() {
-    isDirty = false;
-    m_pCubes = new Cube * *[CHUNK_SIZE];
-    for (int i = 0; i < CHUNK_SIZE; i++) {
-        m_pCubes[i] = new Cube * [CHUNK_HEIGHT];
-        for (int j = 0; j < CHUNK_HEIGHT; j++) {
-            m_pCubes[i][j] = new Cube[CHUNK_SIZE];
-        }
-    }
+Chunk::Chunk()
+    : m_pCubes(nullptr),  // no memory allocated yet
+    isLoaded(false),
+    isDirty(false)
+{
+    // Nothing else to do here
+    // Memory allocation is now done in Load()
 }
+
 
 Chunk::~Chunk() {
     for (int i = 0; i < CHUNK_SIZE; ++i) {
@@ -62,3 +61,23 @@ void Chunk::setUpSphere() {
 }
 
 
+void Chunk::Load() {
+
+    if (isLoaded) return;
+
+    // Allocate cubes only if not already allocated
+    if (!m_pCubes) {
+        m_pCubes = new Cube * *[CHUNK_SIZE];
+        for (int i = 0; i < CHUNK_SIZE; i++) {
+            m_pCubes[i] = new Cube * [CHUNK_HEIGHT];
+            for (int j = 0; j < CHUNK_HEIGHT; j++) {
+                m_pCubes[i][j] = new Cube[CHUNK_SIZE];
+            }
+        }
+    }
+
+    // Optionally initialize cubes with terrain / sphere / default blocks
+    // setUpSphere(); or some procedural generation
+
+    isLoaded = true;
+};

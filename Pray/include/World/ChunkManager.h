@@ -60,7 +60,8 @@ private:
     glm::vec3 m_cameraView;
 
     const int renderDistance; // in chunks
-    const int MAX_CHUNKS_PER_FRAME = 2;
+    const int MAX_CHUNKS_PER_FRAME = 15;
+    const int ASYNC_NUM_CHUNKS_PER_FRAME = 5;
     bool m_forceVisibilityUpdate = false;
     glm::vec3 m_cameraPosition;
     glm::vec3 m_cameraView;
