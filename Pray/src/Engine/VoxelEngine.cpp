@@ -18,10 +18,19 @@ VoxelEngine::VoxelEngine(int width, int height)
     shader = new Shader("shaders/Cube.vert", "shaders/Cube.frag");
     renderer = new MasterRenderer();
     player = new Player(glm::vec3(10.0f, 1.0f, 5.0f));
+    chunkManager = new ChunkManager(7);
 
     //this is for debugging purposes of one chunk
-    chunk = new Chunk();
-    chunk->setUpSphere();
+   //  chunk = new Chunk();
+   // chunk->Load();           // allocate memory
+   // chunk->setUpSphere();
+
+    // Create 6 test chunks
+    for (int x = 0; x < 3; ++x) {
+        for (int z = 0; z < 2; ++z) {
+            chunkManager->GetOrCreateChunk(x, z); // this will add them to loadList
+        }
+    }
 }
 
 VoxelEngine::~VoxelEngine() {
@@ -29,6 +38,7 @@ VoxelEngine::~VoxelEngine() {
     delete shader;
     delete renderer;
 	delete window;
+    delete chunkManager;
 }
 
 
@@ -79,9 +89,11 @@ void VoxelEngine::run() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 view = player->getCamera().getViewMatrix();
-
-        renderer->drawChunk(chunk, shader, view, projection);
-
+      
+       // renderer->drawChunk(chunk, shader, view, projection);
+        // Update chunk manager with camera position and view
+        chunkManager->Update(deltaTime, player->getCamera().getPosition(), view);
+        renderer->drawWorld(chunkManager->getRenderList(), shader, view, projection);
         window->swapBuffers();
         window->pollEvents();
     }

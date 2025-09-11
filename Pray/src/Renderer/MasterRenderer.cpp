@@ -29,6 +29,7 @@ void MasterRenderer::drawWorld(const std::vector<std::shared_ptr<Chunk>> renderL
     for (auto& chunkRenderer : chunkRenderers) {
         chunkRenderer->Draw(meshRenderer, view, projection);
     }
+
 }
 
 

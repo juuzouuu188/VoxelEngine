@@ -1,28 +1,47 @@
 #include "World/Chunk.h"
 
 Chunk::Chunk()
-    : m_pCubes(nullptr),  // no memory allocated yet
-    isLoaded(false),
-    isDirty(false)
+    : isLoaded(false),
+    _isSetUp(false),
+    isDirty(false),
+    rebuildNeeded(true),
+    m_pCubes(nullptr)
 {
-    // Nothing else to do here
-    // Memory allocation is now done in Load()
+    //memory allocation done in load
 }
 
 
 Chunk::~Chunk() {
-    for (int i = 0; i < CHUNK_SIZE; ++i) {
-        for (int j = 0; j < CHUNK_HEIGHT; ++j) {
-            delete[] m_pCubes[i][j];
-        }
-        delete[] m_pCubes[i];
-    }
-    delete[] m_pCubes;
+    UnLoad();
 }
+
+void Chunk::UnLoad() {
+    if (m_pCubes) {
+        for (int i = 0; i < CHUNK_SIZE; ++i) {
+            for (int j = 0; j < CHUNK_HEIGHT; ++j) {
+                delete[] m_pCubes[i][j];
+            }
+            delete[] m_pCubes[i];
+        }
+        delete[] m_pCubes;
+        m_pCubes = nullptr;
+    }
+    // Reset state flags
+    isLoaded = false;
+    _isSetUp = false;
+    isDirty = false;
+    rebuildNeeded = false;
+}
+
 
 void Chunk::Update(float dt) {
 	//in future this would hold logic for updating the chunk, like generating terrain or handling block changes
 };
+
+void Chunk::setUp() {
+    //perlin noise later
+
+}
 
 void Chunk::setUpSphere() {
     int center = CHUNK_SIZE / 2;
@@ -58,6 +77,7 @@ void Chunk::setUpSphere() {
     }
 
     isDirty = true; // Mark chunk as needing mesh rebuild
+    _isSetUp = true; // Mark chunk as set up
 }
 
 

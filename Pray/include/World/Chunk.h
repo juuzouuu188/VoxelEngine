@@ -10,29 +10,46 @@ class Chunk {
 
 public:
 	Chunk();
-	~Chunk();
+	~Chunk()
+        ;
+    // --- Lifecycle ---
+    void Load();          // Allocates cubes & initializes data
+    void setUp();         // Finishes setup (lighting, neighbors, etc.)
+    bool isSetUp() const { return _isSetUp; }
+    void UnLoad(); 
 
-	bool isDirty;
-	void Update(float dt);
-	bool checkDirty() const { return isDirty; }
-	void clearDirty() { isDirty = false; }
+    static const int CHUNK_SIZE = 16;
+    static const int CHUNK_HEIGHT = 256;
+    static constexpr float CUBE_SIZE = 0.5f; // adjust for mini cubes
 
-	static const int CHUNK_SIZE = 16;
-	static const int CHUNK_HEIGHT = 256;
+    // --- Data access ---
+    Cube*** getCubes() const { return m_pCubes; }
+    bool IsLoaded() const { return isLoaded; }
+    void setLoaded(bool loaded) { isLoaded = loaded; }
 
-	// Just data access
-	Cube*** getCubes() const { return m_pCubes; }
-	bool IsLoaded() const { return isLoaded; }
-	void setLoaded(bool loaded) { isLoaded = loaded; }
-	void Load();
+    // --- State flags ---
+    bool checkDirty() const { return isDirty; }
+    void setDirty() { isDirty = true; }
+    void clearDirty() { isDirty = false; }
 
-	//debugging purposes
-	void setUpSphere();
-	static constexpr float CUBE_SIZE = 0.5; // adjust for mini cubes
+    bool needsRebuild() const { return rebuildNeeded; }
+    void setNeedsRebuild(bool rebuild) { rebuildNeeded = rebuild; }
 
-private: // The Cubes data
+    // --- Logic ---
+    void Update(float dt);
+
+    // --- Debugging ---
+    void setUpSphere();
+
+
+ private: 
+    // The Cubes data
 	Cube*** m_pCubes;
-	bool isLoaded = false;
+
+    bool isLoaded;
+	bool _isSetUp;
+	bool isDirty;
+    bool rebuildNeeded;
 };
 
 #endif

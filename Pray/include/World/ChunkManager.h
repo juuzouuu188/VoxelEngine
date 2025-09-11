@@ -29,8 +29,11 @@ class ChunkManager {
 public:
     ChunkManager(int renderDistance);
 
-    void Update(float dt, const glm::vec3& cameraPosition, const glm::vec3& cameraView);
-    void DrawAll(class Shader* shader, MeshRenderer& meshRenderer, const glm::mat4& view, const glm::mat4& proj);
+    void Update(float dt, const glm::vec3& cameraPosition, const glm::mat4& cameraView);
+
+    std::shared_ptr<Chunk> GetOrCreateChunk(int x, int z);
+    const std::vector<std::shared_ptr<Chunk>>& getRenderList() const { return m_renderList; }
+   // void DrawAll(class Shader* shader, MeshRenderer& meshRenderer, const glm::mat4& view, const glm::mat4& proj);
 
 private:
     // --- internal update stages ---
@@ -44,9 +47,10 @@ private:
     void UpdateRenderList();
 
     // Helper: get or create chunk at coordinates
-    std::shared_ptr<Chunk> GetOrCreateChunk(int x, int z);
+   // std::shared_ptr<Chunk> GetOrCreateChunk(int x, int z);
+    int GetChunkX(const std::shared_ptr<Chunk>& chunk);
+    int GetChunkZ(const std::shared_ptr<Chunk>& chunk);
 
-private:
     std::unordered_map<ChunkCoords, std::shared_ptr<Chunk>, ChunkCoordsHash> chunks;
 
     std::vector<std::shared_ptr<Chunk>> m_loadList;
@@ -57,14 +61,12 @@ private:
     std::vector<std::shared_ptr<Chunk>> m_renderList;
 
     glm::vec3 m_cameraPosition;
-    glm::vec3 m_cameraView;
+    glm::mat4 m_cameraView;
 
     const int renderDistance; // in chunks
     const int MAX_CHUNKS_PER_FRAME = 15;
     const int ASYNC_NUM_CHUNKS_PER_FRAME = 5;
     bool m_forceVisibilityUpdate = false;
-    glm::vec3 m_cameraPosition;
-    glm::vec3 m_cameraView;
 
 };
 
