@@ -18,7 +18,7 @@ VoxelEngine::VoxelEngine(int width, int height)
     shader = new Shader("shaders/Cube.vert", "shaders/Cube.frag");
     renderer = new MasterRenderer();
     player = new Player(glm::vec3(10.0f, 1.0f, 5.0f));
-    chunkManager = new ChunkManager(7);
+    chunkManager = new ChunkManager(15);
 
     //this is for debugging purposes of one chunk
    //  chunk = new Chunk();

@@ -30,7 +30,7 @@ void Chunk::UnLoad() {
     isLoaded = false;
     _isSetUp = false;
     isDirty = false;
-    rebuildNeeded = false;
+    rebuildNeeded = true;
 }
 
 
@@ -76,7 +76,7 @@ void Chunk::setUpSphere() {
         }
     }
 
-    isDirty = true; // Mark chunk as needing mesh rebuild
+    rebuildNeeded = true; // Mark chunk as needing mesh rebuild
     _isSetUp = true; // Mark chunk as set up
 }
 

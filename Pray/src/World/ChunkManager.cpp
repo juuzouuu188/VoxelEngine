@@ -70,6 +70,7 @@ void ChunkManager::UpdateLoadList() {
         if (!pChunk->IsLoaded()) {
             pChunk->Load();
             lNumOfChunksLoaded++;
+            m_setupList.push_back(pChunk);
             m_forceVisibilityUpdate = true;
             std::cout << "Some chunk is loaded \n";
         }
@@ -90,6 +91,10 @@ void ChunkManager::UpdateSetupList() {
         if (pChunk->IsLoaded() && !pChunk->isSetUp()) {
             //for now and debugging we will just setup all chunks as spheres
             pChunk->setUpSphere();
+
+            //Explicitly mark as needing rebuild
+            pChunk->setNeedsRebuild(true);
+            m_rebuildList.push_back(pChunk);
             std::cout << "Some chunk is setup \n";
 
             if (pChunk->isSetUp() == true) {
@@ -114,6 +119,7 @@ void ChunkManager::UpdateRebuildList() {
 
             // Mark the chunk itself
            // pChunk->setNeedsRebuild(true);
+            std::cout << "Some chunk is rebuilt \n";
             chunksMarkedThisFrame++;
             m_forceVisibilityUpdate = true;
 
@@ -142,6 +148,7 @@ void ChunkManager::UpdateRebuildList() {
 
 void ChunkManager::UpdateUnloadList() {
     //Unload any chunks that are in the unload list
+    //logic for pushing this will be done in visibility 
     for (auto& pChunk : m_unloadList) {
         if (pChunk->IsLoaded()) {
             pChunk->UnLoad();
@@ -171,6 +178,11 @@ void ChunkManager::UpdateVisibilityList(const glm::vec3& cameraPos) {
         // Add chunk to visibility list if within render distance
         if (distance <= renderDistance * Chunk::CHUNK_SIZE) {
             m_visibilityList.push_back(chunk);
+          //  std::cout << "Chunk at (" << pair.first.x << ", " << pair.first.z << ") is visible. \n";
+            //this works
+        }
+        else {
+            m_unloadList.push_back(chunk);
         }
     }
 }

@@ -3,7 +3,8 @@
 ChunkRenderer::ChunkRenderer(Chunk* chunk, Shader* shader)
     : chunk(chunk), shader(shader)
 {
-    BuildMeshes(); // generate meshes when constructed
+
+    BuildMeshes();
 }
 void ChunkRenderer::BuildMeshes() {
     // Currently hybrid approach, between multiple meshes and texture atlas

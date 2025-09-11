@@ -45,123 +45,128 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="glad.c">
+    <ClCompile Include="src\Player\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\World\Chunk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
+    <ClCompile Include="src\Renderer\ChunkRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="VoxelEngine.cpp">
+    <ClCompile Include="src\World\ChunkManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Entity</Filter>
+    <ClCompile Include="src\World\Cube.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MasterRenderer.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="src\Renderer\EBO.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EBO.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="src\ThirdParty\glad.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VAO.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="src\Renderer\MasterRenderer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VBO.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="src\Renderer\Mesh.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="src\Renderer\MeshRenderer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Chunk.cpp">
-      <Filter>Source Files\Objects</Filter>
+    <ClCompile Include="src\Player\Player.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\VBO.h">
-      <Filter>Header Files\Rendering Parts</Filter>
+    <ClCompile Include="src\Renderer\Shader.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\VAO.h">
-      <Filter>Header Files\Rendering Parts</Filter>
+    <ClCompile Include="src\ThirdParty\stb.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stb.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="src\Renderer\Texture.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="src\Renderer\VAO.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Render\Mesh Parts</Filter>
+    <ClCompile Include="include\Renderer\VAO.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>Source Files\Render\Mesh Parts</Filter>
+    <ClCompile Include="src\Renderer\VBO.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChunkRenderer.cpp">
-      <Filter>Source Files\Render\Chunk Parts</Filter>
+    <ClCompile Include="include\Renderer\VBO.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\VoxelEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\World\WorldCoords.h">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\VoxelEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\InputStruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\MasterRenderer.h">
-      <Filter>Header Files\Rendering Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shader.h">
-      <Filter>Header Files\Rendering Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Texture.h">
-      <Filter>Header Files\Rendering Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EBO.h">
-      <Filter>Header Files\Rendering Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Mesh.h">
-      <Filter>Header Files\Rendering Parts\Mesh Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Vertex.h">
+    <ClInclude Include="include\Player\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\MeshRenderer.h">
-      <Filter>Header Files\Rendering Parts\Mesh Parts</Filter>
+    <ClInclude Include="include\World\Chunk.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Chunk.h">
-      <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
+    <ClInclude Include="include\Renderer\ChunkRenderer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Cube.h">
-      <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
+    <ClInclude Include="include\World\ChunkManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ChunkRenderer.h">
-      <Filter>Header Files\Rendering Parts\Chunk Parts</Filter>
+    <ClInclude Include="include\World\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer\EBO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer\MasterRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer\MeshRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Player\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\VoxelEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine\Window.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Cube.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Cube.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
+    <None Include="shaders\Cube.frag" />
+    <None Include="shaders\Cube.vert" />
   </ItemGroup>
 </Project>

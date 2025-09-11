@@ -10,24 +10,37 @@ MasterRenderer::MasterRenderer() {
 void MasterRenderer::drawWorld(const std::vector<std::shared_ptr<Chunk>> renderList, Shader* shader,
     const glm::mat4& view, const glm::mat4& projection) {
 
-    // Only create ChunkRenderers for chunks that don't have one yet
+    int chunkIndex = 0;
     for (const auto& chunk : renderList) {
+        if (!chunk || !chunk->IsLoaded() || !chunk->isSetUp())
+            continue;
 
-        // Check if we already have a renderer for this chunk
+        // Check if a ChunkRenderer exists for this chunk
         auto it = std::find_if(chunkRenderers.begin(), chunkRenderers.end(),
             [&](const std::shared_ptr<ChunkRenderer>& r) {
                 return r->getChunk() == chunk.get();
             });
 
+        std::shared_ptr<ChunkRenderer> rendererPtr;
         if (it == chunkRenderers.end()) {
-            // Create a new persistent ChunkRenderer
-            chunkRenderers.push_back(std::make_shared<ChunkRenderer>(chunk.get(), shader));
+            rendererPtr = std::make_shared<ChunkRenderer>(chunk.get(), shader);
+            chunkRenderers.push_back(rendererPtr);
+            std::cout << "Created ChunkRenderer for chunk " << chunkIndex << "\n";
         }
-    }
+        else {
+            rendererPtr = *it;
+        }
 
-    // Draw all chunk renderers
-    for (auto& chunkRenderer : chunkRenderers) {
-        chunkRenderer->Draw(meshRenderer, view, projection);
+        // Rebuild mesh if needed
+        if (chunk->needsRebuild()) {
+            std::cout << "Rebuilding mesh for chunk " << chunkIndex << "\n";
+            rendererPtr->BuildMeshes();
+            chunk->setNeedsRebuild(false);
+        }
+
+        // Draw the chunk
+        rendererPtr->Draw(meshRenderer, view, projection);
+        std::cout << "Drawing chunk " << chunkIndex++  << "\n";
     }
 
 }

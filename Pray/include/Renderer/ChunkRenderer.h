@@ -10,8 +10,9 @@
 
 //job is to store the a reference to the chunk data and render it
 //handle drawing all meshes in the chunk 
-//possible handle chunk updates in future, ie placing a block or removing a block etc
+//possible handle chunk updates in future, ie placing a block or removing a block 
 
+//need to pass in chunk cooords in position relatuve to world origin.
 
 class ChunkRenderer {
 public:
@@ -35,6 +36,7 @@ public:
 
 	// Draws the chunk using the shared mesh renderer
 	void Draw(MeshRenderer& meshRenderer,const glm::mat4& view, const glm::mat4& projection);
+	void BuildMeshes();
 	Chunk* getChunk() const { return chunk;  }
 
 private:
@@ -44,5 +46,4 @@ private:
 
 	std::vector<std::unique_ptr<Mesh>> meshes;  // Meshes that make up this chunk
 
-	void BuildMeshes();
 };

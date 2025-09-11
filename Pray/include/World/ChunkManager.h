@@ -65,7 +65,7 @@ private:
 
     const int renderDistance; // in chunks
     const int MAX_CHUNKS_PER_FRAME = 15;
-    const int ASYNC_NUM_CHUNKS_PER_FRAME = 5;
+    const int ASYNC_NUM_CHUNKS_PER_FRAME = 15;
     bool m_forceVisibilityUpdate = false;
 
 };
