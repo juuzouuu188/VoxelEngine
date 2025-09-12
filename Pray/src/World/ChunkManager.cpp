@@ -28,21 +28,6 @@ void ChunkManager::Update(float dt, const glm::vec3& cameraPos, const glm::mat4&
 }
 
 
-// -- gonna delegate this drawing to masterRenderer
-// --- Draw all visible chunks ---
-//void ChunkManager::DrawAll(Shader* shader,MeshRenderer& meshRenderer, const glm::mat4& view, const glm::mat4& proj) {
-  //  for (auto& chunk : m_renderList) {
-    //    if (!chunk) continue;
-
-        // Create a temporary ChunkRenderer for this chunk
-      //  ChunkRenderer chunkRenderer(chunk.get(), shader);
-
-        // Draw the chunk using the MeshRenderer
-        //chunkRenderer.Draw(meshRenderer, view, proj);
-   // }
-//}
-
-
 // --- Get or create chunk ---
 std::shared_ptr<Chunk> ChunkManager::GetOrCreateChunk(int x, int z) {
     return GetOrCreateChunk(ChunkCoords{ x, z });
@@ -201,6 +186,8 @@ void ChunkManager::UpdateRenderList() {
         }
     }
 }
+
+
 
 void ChunkManager::UpdateFlagsList() {
 

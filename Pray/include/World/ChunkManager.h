@@ -24,6 +24,7 @@ public:
     ChunkManager(int renderDistance);
 
     void Update(float dt, const glm::vec3& cameraPosition, const glm::mat4& cameraView);
+    void deleteAllChunks();
 
     // Returns existing chunk or creates a new one at coords
     std::shared_ptr<Chunk> GetOrCreateChunk(int x, int z);
@@ -63,8 +64,8 @@ private:
     glm::mat4 m_cameraView;
 
     const int renderDistance; // in chunks
-    const int MAX_CHUNKS_PER_FRAME = 15;
-    const int ASYNC_NUM_CHUNKS_PER_FRAME = 15;
+    const int MAX_CHUNKS_PER_FRAME = 100;
+    const int ASYNC_NUM_CHUNKS_PER_FRAME = 100; // just match max frame, as i havent implemented async
     bool m_forceVisibilityUpdate = false;
 
 };

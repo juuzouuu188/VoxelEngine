@@ -21,7 +21,7 @@ public:
 
     static const int CHUNK_SIZE = 16;
     static const int CHUNK_HEIGHT = 256;
-    static constexpr float CUBE_SIZE = 0.5f; // adjust for mini cubes
+    static constexpr float CUBE_SIZE = 1.0f; // adjust for mini cubes
 
     // --- Data access ---
     Cube*** getCubes() const { return m_pCubes; }

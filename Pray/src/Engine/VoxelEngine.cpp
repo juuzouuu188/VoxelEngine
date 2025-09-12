@@ -9,6 +9,7 @@
 VoxelEngine::VoxelEngine(int width, int height)
 {
     window = new Window(width, height, "Voxel Engine");
+    ui = new UIManager(window);
 
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
@@ -18,19 +19,17 @@ VoxelEngine::VoxelEngine(int width, int height)
     shader = new Shader("shaders/Cube.vert", "shaders/Cube.frag");
     renderer = new MasterRenderer();
     player = new Player(glm::vec3(10.0f, 1.0f, 5.0f));
-    chunkManager = new ChunkManager(15);
+    chunkManager = new ChunkManager(50);
 
-    //this is for debugging purposes of one chunk
-   //  chunk = new Chunk();
-   // chunk->Load();           // allocate memory
-   // chunk->setUpSphere();
 
-    // Create 6 test chunks
-    for (int x = 0; x < 3; ++x) {
-        for (int z = 0; z < 2; ++z) {
-            chunkManager->GetOrCreateChunk(x, z); // this will add them to loadList
-        }
-    }
+   // Create a square tile of chunks centered around (0, 0)
+  //  int radius = 7; // number of chunks from center to edge
+    //for (int x = -radius; x < radius; ++x) {
+      //  for (int z = -radius; z < radius; ++z) {
+        //    chunkManager->GetOrCreateChunk(x, z); // Adds chunk to load list
+          //  std::cout << "Created chunk at (" << x << ", " << z << ")\n";
+       // }
+   // }
 }
 
 VoxelEngine::~VoxelEngine() {
@@ -101,11 +100,18 @@ void VoxelEngine::run() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 view = player->getCamera().getViewMatrix();
-      
-       // renderer->drawChunk(chunk, shader, view, projection);
-        // Update chunk manager with camera position and view
+
+        //3d pipeline
         chunkManager->Update(deltaTime, player->getCamera().getPosition(), view);
         renderer->drawWorld(chunkManager->getRenderList(), shader, view, projection);
+
+
+        // // --- UI ---   (ui pipeline)
+        ui->beginFrame();
+        ui->fpsCounter(deltaTime);
+        ui->debugChunkManager(chunkManager);
+        ui->endFrame();
+
         window->swapBuffers();
         window->pollEvents();
     }
