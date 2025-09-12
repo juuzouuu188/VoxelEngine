@@ -46,8 +46,8 @@ void MasterRenderer::drawWorld(const std::vector<std::shared_ptr<Chunk>> renderL
 }
 
 
-void MasterRenderer::drawChunk(Chunk* chunk, Shader* shader, const glm::mat4& view, const glm::mat4& projection) {
-    ChunkRenderer chunkRenderer(chunk, shader);
-    chunkRenderer.Draw(meshRenderer, view, projection);
-}
+//void MasterRenderer::drawChunk(Chunk* chunk, Shader* shader, const glm::mat4& view, const glm::mat4& projection) {
+  //  ChunkRenderer chunkRenderer(chunk, shader);
+    //chunkRenderer.Draw(meshRenderer, view, projection);
+//}
 

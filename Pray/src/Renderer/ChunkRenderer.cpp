@@ -13,6 +13,17 @@ void ChunkRenderer::BuildMeshes() {
     Cube*** cubes = chunk->getCubes();
     int CHUNK_SIZE = Chunk::CHUNK_SIZE;
     float cubeSize = Chunk::CUBE_SIZE; // scale cubes
+    int CHUNK_HEIGHT = Chunk::CHUNK_HEIGHT;
+
+    // Compute the world offset for this chunk based on its grid coordinates
+    ChunkCoords coords = chunk->getCoords(); // Chunk now stores its coords
+
+    glm::vec3 chunkWorldOffset = glm::vec3(
+        coords.x * CHUNK_SIZE * cubeSize,  // world X
+        0.0f,                              // world Y
+        coords.z * CHUNK_SIZE * cubeSize   // world Z
+    );
+
 
     // Step 1: Group cubes by type
     std::unordered_map<CubeType, std::vector<Vertex>> verticesByType;
@@ -30,9 +41,10 @@ void ChunkRenderer::BuildMeshes() {
                 if (indexCountByType.find(type) == indexCountByType.end())
                     indexCountByType[type] = 0;
 
-                // Scale cube position
+                // Scale cube position and add chunk offset
                 glm::vec3 pos(x, y, z);
                 pos *= cubeSize;
+                pos += chunkWorldOffset;  // world space coordinates
 
                 auto addFace = [&](const glm::vec3& normal) {
                     int nx = x + (int)normal.x;
@@ -41,7 +53,7 @@ void ChunkRenderer::BuildMeshes() {
 
                     bool neighborExists = false;
                     if (nx >= 0 && nx < CHUNK_SIZE &&
-                        ny >= 0 && ny < CHUNK_SIZE &&
+                        ny >= 0 && ny < CHUNK_HEIGHT &&
                         nz >= 0 && nz < CHUNK_SIZE) {
                         neighborExists = !cubes[nx][ny][nz].isAir();
                     }

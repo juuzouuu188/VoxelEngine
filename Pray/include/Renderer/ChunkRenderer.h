@@ -44,6 +44,7 @@ private:
 	Chunk* chunk;
 	Shader* shader;
 
+
 	std::vector<std::unique_ptr<Mesh>> meshes;  // Meshes that make up this chunk
 
 };

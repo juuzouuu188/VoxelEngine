@@ -4,12 +4,13 @@
 #define CHUNK_H
 
 #include "Cube.h"
+#include "WorldCoords.h"
 #include <glm/glm.hpp>
 
 class Chunk {
 
 public:
-	Chunk();
+	Chunk(const ChunkCoords& coords);
 	~Chunk()
         ;
     // --- Lifecycle ---
@@ -26,6 +27,9 @@ public:
     Cube*** getCubes() const { return m_pCubes; }
     bool IsLoaded() const { return isLoaded; }
     void setLoaded(bool loaded) { isLoaded = loaded; }
+
+    // --- Coordinates ---
+    const ChunkCoords& getCoords() const { return coords; }
 
     // --- State flags ---
     bool checkDirty() const { return isDirty; }
@@ -45,6 +49,7 @@ public:
  private: 
     // The Cubes data
 	Cube*** m_pCubes;
+    ChunkCoords coords;   // Position in the world grid
 
     bool isLoaded;
 	bool _isSetUp;

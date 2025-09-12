@@ -70,14 +70,26 @@ void VoxelEngine::processInput(float dt) {
 
 void VoxelEngine::run() {
     // Setup view and projection matrices once
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f),
-        (float)1280 / (float)720,
-        0.1f, 100.0f);
+   // glm::mat4 projection = glm::perspective(glm::radians(45.0f),
+     //   (float)1280 / (float)720,
+       // 0.1f, 100.0f);
 
 
     float lastFrame = 0.0f;
 
     while (!window->shouldClose()) {
+        // Get current window size
+        int width, height;
+        glfwGetFramebufferSize(window->getGLFWwindow(), &width, &height);
+
+        // Update viewport
+        glViewport(0, 0, width, height);
+
+        // Update projection matrix dynamically
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f),
+            (float)width / (float)height,
+            0.1f, 100.0f);
+
 
         float currentFrame = glfwGetTime();   // time in seconds since GLFW was initialized
         float deltaTime = currentFrame - lastFrame;

@@ -5,14 +5,8 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include "Chunk.h"
+#include "WorldCoords.h"
 
-// Key for identifying chunks by grid position
-struct ChunkCoords {
-    int x, z;
-    bool operator==(const ChunkCoords& other) const {
-        return x == other.x && z == other.z;
-    }
-};
 
 // Hash function for unordered_map
 struct ChunkCoordsHash {
@@ -31,8 +25,13 @@ public:
 
     void Update(float dt, const glm::vec3& cameraPosition, const glm::mat4& cameraView);
 
+    // Returns existing chunk or creates a new one at coords
     std::shared_ptr<Chunk> GetOrCreateChunk(int x, int z);
+    std::shared_ptr<Chunk> GetOrCreateChunk(const ChunkCoords& coords);
+
+
     const std::vector<std::shared_ptr<Chunk>>& getRenderList() const { return m_renderList; }
+
    // void DrawAll(class Shader* shader, MeshRenderer& meshRenderer, const glm::mat4& view, const glm::mat4& proj);
 
 private:

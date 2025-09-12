@@ -45,16 +45,22 @@ void ChunkManager::Update(float dt, const glm::vec3& cameraPos, const glm::mat4&
 
 // --- Get or create chunk ---
 std::shared_ptr<Chunk> ChunkManager::GetOrCreateChunk(int x, int z) {
-    ChunkCoords coords{ x, z };
+    return GetOrCreateChunk(ChunkCoords{ x, z });
+}
+
+std::shared_ptr<Chunk> ChunkManager::GetOrCreateChunk(const ChunkCoords& coords) {
     auto it = chunks.find(coords);
     if (it != chunks.end()) return it->second;
 
-    auto chunk = std::make_shared<Chunk>();
+    // Create chunk with its coords
+    auto chunk = std::make_shared<Chunk>(coords);
     chunks[coords] = chunk;
     m_loadList.push_back(chunk);
-    std::cout << "Chunk at (" << x << ", " << z << " ) created and added to load list. \n";
+
+    std::cout << "Chunk at (" << coords.x << ", " << coords.z << ") created and added to load list.\n";
     return chunk;
 }
+
 
 // --- Pipeline stages ---
 void ChunkManager::UpdateLoadList() {

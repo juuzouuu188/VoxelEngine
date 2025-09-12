@@ -1,15 +1,16 @@
 #include "World/Chunk.h"
 
-Chunk::Chunk()
-    : isLoaded(false),
+// New constructor that takes coordinates
+Chunk::Chunk(const ChunkCoords& coords)
+    : coords(coords),          // store world position
+    isLoaded(false),
     _isSetUp(false),
     isDirty(false),
     rebuildNeeded(true),
     m_pCubes(nullptr)
 {
-    //memory allocation done in load
+    // Memory allocation is done in Load()
 }
-
 
 Chunk::~Chunk() {
     UnLoad();
