@@ -5,6 +5,10 @@
 
 #include "Cube.h"
 #include "WorldCoords.h"
+
+
+//just for testing
+#include "Perlin.h"
 #include <glm/glm.hpp>
 
 class Chunk {

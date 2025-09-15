@@ -8,6 +8,8 @@ VAO::VAO()
 
 // Links a VBO to the VAO using a certain layout
 
+//this is the culprit for incorrect texture mapping?
+//it was the use of this in mesh
 void VAO::LinkVBO(VBO& vbo, GLuint layout, GLint size, GLsizei stride, const void* offset)
 {
 	vbo.Bind();

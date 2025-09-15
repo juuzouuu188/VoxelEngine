@@ -63,7 +63,7 @@ void ChunkManager::UpdateLoadList() {
             lNumOfChunksLoaded++;
             m_setupList.push_back(pChunk);
             m_forceVisibilityUpdate = true;
-            std::cout << "Some chunk is loaded \n";
+          //  std::cout << "Some chunk is loaded \n";
         }
     }
 
@@ -81,12 +81,12 @@ void ChunkManager::UpdateSetupList() {
 
         if (pChunk->IsLoaded() && !pChunk->isSetUp()) {
             //for now and debugging we will just setup all chunks as spheres
-            pChunk->setUpSphere();
+            pChunk->setUp();
 
             //Explicitly mark as needing rebuild
             pChunk->setNeedsRebuild(true);
             m_rebuildList.push_back(pChunk);
-            std::cout << "Some chunk is setup \n";
+          //  std::cout << "Some chunk is setup \n";
 
             if (pChunk->isSetUp() == true) {
                 m_forceVisibilityUpdate = true;

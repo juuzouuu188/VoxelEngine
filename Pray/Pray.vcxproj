@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -172,8 +172,11 @@
     <ClCompile Include="include\Renderer\VBO.h" />
     <ClCompile Include="src\Engine\VoxelEngine.cpp" />
     <ClCompile Include="src\Engine\Window.cpp" />
+    <ClCompile Include="src\World\Perlin.cpp" />
+    <ClCompile Include="src\World\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Downloads\stb_perlin.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />
@@ -201,6 +204,9 @@
     <ClInclude Include="include\Renderer\Vertex.h" />
     <ClInclude Include="include\Engine\VoxelEngine.h" />
     <ClInclude Include="include\Engine\Window.h" />
+    <ClInclude Include="include\World\Perlin.h" />
+    <ClInclude Include="include\World\Terrain.h" />
+    <ClInclude Include="include\World\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Cube.frag" />

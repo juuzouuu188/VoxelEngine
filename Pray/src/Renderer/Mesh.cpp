@@ -13,6 +13,10 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vec
     vao.LinkVBO(vbo, 1, 3, sizeof(Vertex), (void*)offsetof(Vertex, normal)); // normal
     vao.LinkVBO(vbo, 2, 2, sizeof(Vertex), (void*)offsetof(Vertex, texUV)); // UV
 
+    //these two were the culprit for my texture mapping issues
+    vao.LinkVBO(vbo, 2, 3, sizeof(Vertex), (void*)offsetof(Vertex, color));     // aColor
+    vao.LinkVBO(vbo, 3, 2, sizeof(Vertex), (void*)offsetof(Vertex, texUV));     // aTexCoord
+
     ebo.Bind();  // bind EBO to VAO
 
     vao.Unbind();

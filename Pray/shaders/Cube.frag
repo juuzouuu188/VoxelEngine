@@ -7,5 +7,5 @@ uniform sampler2D texture1;
 void main() {
   FragColor = texture(texture1, TexCoord);
   //this is for debugging
-   //FragColor = vec4(0.0, 1.0, 0.0, 1.0); // RGBA: green
+  //  FragColor = vec4(texture1, 0.0, 1.0); // show UV coords as red/green
 }

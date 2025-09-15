@@ -25,7 +25,7 @@ void MasterRenderer::drawWorld(const std::vector<std::shared_ptr<Chunk>> renderL
         if (it == chunkRenderers.end()) {
             rendererPtr = std::make_shared<ChunkRenderer>(chunk.get(), shader);
             chunkRenderers.push_back(rendererPtr);
-            std::cout << "Created ChunkRenderer for chunk " << chunkIndex << "\n";
+           // std::cout << "Created ChunkRenderer for chunk " << chunkIndex << "\n";
         }
         else {
             rendererPtr = *it;
@@ -33,14 +33,14 @@ void MasterRenderer::drawWorld(const std::vector<std::shared_ptr<Chunk>> renderL
 
         // Rebuild mesh if needed
         if (chunk->needsRebuild()) {
-            std::cout << "Rebuilding mesh for chunk " << chunkIndex << "\n";
+          //  std::cout << "Rebuilding mesh for chunk " << chunkIndex << "\n";
             rendererPtr->BuildMeshes();
             chunk->setNeedsRebuild(false);
         }
 
         // Draw the chunk
         rendererPtr->Draw(meshRenderer, view, projection);
-        std::cout << "Drawing chunk " << chunkIndex++  << "\n";
+      //  std::cout << "Drawing chunk " << chunkIndex++  << "\n";
     }
 
 }

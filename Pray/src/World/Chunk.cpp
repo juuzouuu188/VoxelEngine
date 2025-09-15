@@ -1,4 +1,5 @@
 #include "World/Chunk.h"
+#include <iostream>
 
 // New constructor that takes coordinates
 Chunk::Chunk(const ChunkCoords& coords)
@@ -39,9 +40,41 @@ void Chunk::Update(float dt) {
 	//in future this would hold logic for updating the chunk, like generating terrain or handling block changes
 };
 
-void Chunk::setUp() {
-    //perlin noise later
+Perlin noise(0.05f, 4, 0.3f, 0.3f);
 
+void Chunk::setUp() {
+   
+    for (int x = 0; x < CHUNK_SIZE; ++x) {
+        for (int z = 0; z < CHUNK_SIZE; ++z) {
+            float worldX = coords.x * CHUNK_SIZE + x;
+            float worldZ = coords.z * CHUNK_SIZE + z;
+
+            float height = noise.get(worldX, worldZ);
+            height = (height + 1.0f) * 0.5f;
+            int maxHeight = (int)(height * CHUNK_HEIGHT*0.25);
+            std::cout << maxHeight << std::endl;
+
+           
+            for (int y = 0; y < CHUNK_HEIGHT; ++y) {  // iterate all y
+                if (y <= maxHeight) {
+                    m_pCubes[x][y][z].setActive(true);
+
+                    // Checker pattern
+                    if ((x + z) % 2 == 0)
+                        m_pCubes[x][y][z].setType(CubeType_Grass);
+                    else
+                        m_pCubes[x][y][z].setType(CubeType_Grass);
+                }
+                else {
+                    m_pCubes[x][y][z].setActive(false); // leave as air
+                }
+            }
+
+        }
+    }
+
+    rebuildNeeded = true; // Mark chunk as needing mesh rebuild
+    _isSetUp = true; // Mark chunk as set up
 }
 
 void Chunk::setUpSphere() {
@@ -94,6 +127,13 @@ void Chunk::Load() {
             for (int j = 0; j < CHUNK_HEIGHT; j++) {
                 m_pCubes[i][j] = new Cube[CHUNK_SIZE];
             }
+        }
+    }
+
+    for (int x = 0; x < CHUNK_SIZE; ++x) {
+        for(int y = 0; y < CHUNK_HEIGHT; ++y)
+        for (int z = 0; z < CHUNK_SIZE; ++z) {
+            m_pCubes[x][y][z].setActive(false);
         }
     }
 

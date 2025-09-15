@@ -32,7 +32,7 @@ void ChunkRenderer::BuildMeshes() {
 
     // this is naive, will make greedy algo later
     for (int x = 0; x < CHUNK_SIZE; ++x) {
-        for (int y = 0; y < CHUNK_SIZE; ++y) {
+        for (int y = 0; y < CHUNK_HEIGHT; ++y) {
             for (int z = 0; z < CHUNK_SIZE; ++z) {
                 Cube& cube = cubes[x][y][z];
                 if (cube.isAir()) continue;
@@ -98,10 +98,10 @@ void ChunkRenderer::BuildMeshes() {
                         }
 
                         glm::vec3 color(1.0f, 1.0f, 1.0f);
-                        verticesByType[type].push_back(Vertex{ p0, normal, color, glm::vec2(1,0) });
-                        verticesByType[type].push_back(Vertex{ p1, normal, color, glm::vec2(0,0) });
-                        verticesByType[type].push_back(Vertex{ p2, normal, color, glm::vec2(0,0) });
-                        verticesByType[type].push_back(Vertex{ p3, normal, color, glm::vec2(0,0) });
+                        verticesByType[type].push_back(Vertex{ p0, normal, color, glm::vec2(0,0) });
+                        verticesByType[type].push_back(Vertex{ p1, normal, color, glm::vec2(1,0) });
+                        verticesByType[type].push_back(Vertex{ p2, normal, color, glm::vec2(1,1) });
+                        verticesByType[type].push_back(Vertex{ p3, normal, color, glm::vec2(0,1) });
 
                         GLuint idx = indexCountByType[type];
                         indicesByType[type].push_back(idx);
