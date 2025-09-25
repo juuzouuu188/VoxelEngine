@@ -18,18 +18,8 @@ VoxelEngine::VoxelEngine(int width, int height)
     // Initialize shader and renderer
     shader = new Shader("shaders/Cube.vert", "shaders/Cube.frag");
     renderer = new MasterRenderer();
-    player = new Player(glm::vec3(10.0f, 1.0f, 5.0f));
+    player = new Player(glm::vec3(10.0f, 35.0f, 5.0f));
     chunkManager = new ChunkManager(50);
-
-
-   // Create a square tile of chunks centered around (0, 0)
-  //  int radius = 7; // number of chunks from center to edge
-    //for (int x = -radius; x < radius; ++x) {
-      //  for (int z = -radius; z < radius; ++z) {
-        //    chunkManager->GetOrCreateChunk(x, z); // Adds chunk to load list
-          //  std::cout << "Created chunk at (" << x << ", " << z << ")\n";
-       // }
-   // }
 }
 
 VoxelEngine::~VoxelEngine() {
@@ -105,16 +95,19 @@ void VoxelEngine::run() {
         chunkManager->Update(deltaTime, player->getCamera().getPosition(), view);
         renderer->drawWorld(chunkManager->getRenderList(), shader, view, projection);
 
-
         // // --- UI ---   (ui pipeline)
         ui->beginFrame();
         ui->fpsCounter(deltaTime);
         ui->debugChunkManager(chunkManager);
+        ui->renderStats(renderer);
         ui->endFrame();
 
         window->swapBuffers();
         window->pollEvents();
     }
 
+
+
 }
+
 

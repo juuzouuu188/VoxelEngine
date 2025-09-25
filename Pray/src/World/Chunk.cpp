@@ -40,7 +40,7 @@ void Chunk::Update(float dt) {
 	//in future this would hold logic for updating the chunk, like generating terrain or handling block changes
 };
 
-Perlin noise(0.05f, 4, 0.3f, 0.3f);
+Perlin noise(0.025f, 4, 0.3f, 0.3f);
 
 void Chunk::setUp() {
    
@@ -60,8 +60,8 @@ void Chunk::setUp() {
                     m_pCubes[x][y][z].setActive(true);
 
                     // Checker pattern
-                    if ((x + z) % 2 == 0)
-                        m_pCubes[x][y][z].setType(CubeType_Grass);
+                    if ( y <= 20)
+                        m_pCubes[x][y][z].setType(CubeType_Sand);
                     else
                         m_pCubes[x][y][z].setType(CubeType_Grass);
                 }

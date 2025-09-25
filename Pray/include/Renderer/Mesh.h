@@ -33,6 +33,10 @@ public:
 	// Initializes the mesh
 	Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::vector <Texture*>& textures);
 
+
+	//this is for debugging purposes
+	int getVertices() const { return (int)vertices.size(); }
+
 	//support other advanced features later
 	
 };

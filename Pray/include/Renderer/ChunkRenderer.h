@@ -27,23 +27,24 @@ public:
 		if (!cubeTextures.empty()) return; // already loaded
 		//ensure Enum type matches the correct number of channels in the texture
 		cubeTextures[CubeType_Grass] = std::make_unique<Texture>("Textures/grass.jpg", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
-		cubeTextures[CubeType_Dirt] = std::make_unique<Texture>("Textures/dirt.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+		cubeTextures[CubeType_Dirt] = std::make_unique<Texture>("Textures/dirt.jpg", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
 		cubeTextures[CubeType_Stone] = std::make_unique<Texture>("Textures/stone.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
 		cubeTextures[CubeType_Wood] = std::make_unique<Texture>("Textures/wood.png", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-		cubeTextures[CubeType_Sand] = std::make_unique<Texture>("Textures/sand.jpeg", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
+		cubeTextures[CubeType_Sand] = std::make_unique<Texture>("Textures/sand.jpg", "diffuse", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
 	}
 
 
 	// Draws the chunk using the shared mesh renderer
 	void Draw(MeshRenderer& meshRenderer,const glm::mat4& view, const glm::mat4& projection);
 	void BuildMeshes();
+	void BuildGreedyMeshes(); // testing currentl
+	size_t getVertexCount() const;
 	Chunk* getChunk() const { return chunk;  }
 
 private:
 	//private cause each chunk renderer handles one chunk
 	Chunk* chunk;
 	Shader* shader;
-
 
 	std::vector<std::unique_ptr<Mesh>> meshes;  // Meshes that make up this chunk
 

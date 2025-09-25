@@ -32,9 +32,14 @@ void MasterRenderer::drawWorld(const std::vector<std::shared_ptr<Chunk>> renderL
         }
 
         // Rebuild mesh if needed
-        if (chunk->needsRebuild()) {
-          //  std::cout << "Rebuilding mesh for chunk " << chunkIndex << "\n";
-            rendererPtr->BuildMeshes();
+        if (chunk->needsRebuild() ) {
+            if (useGreedyMesh) {
+                //  std::cout << "Rebuilding mesh for chunk " << chunkIndex << "\n";
+                rendererPtr->BuildGreedyMeshes();
+            }
+            else {
+                rendererPtr->BuildMeshes();
+            }
             chunk->setNeedsRebuild(false);
         }
 
@@ -45,9 +50,23 @@ void MasterRenderer::drawWorld(const std::vector<std::shared_ptr<Chunk>> renderL
 
 }
 
+size_t MasterRenderer::totalVertices() {
+
+    size_t count = 0;
+    if (chunkRenderers.size() != 0) {
+        for (auto& cr : chunkRenderers) {
+            count += cr->getVertexCount();
+        }
+    }
+    return count;
+}
+
 
 //void MasterRenderer::drawChunk(Chunk* chunk, Shader* shader, const glm::mat4& view, const glm::mat4& projection) {
   //  ChunkRenderer chunkRenderer(chunk, shader);
     //chunkRenderer.Draw(meshRenderer, view, projection);
 //}
 
+void MasterRenderer::setGreedyMesh(bool b) {
+    useGreedyMesh = b;
+}

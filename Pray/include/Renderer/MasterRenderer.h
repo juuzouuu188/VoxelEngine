@@ -20,10 +20,18 @@ public:
     void drawWorld(const std::vector<std::shared_ptr<Chunk>> renderList, Shader* shader, const glm::mat4& view, const glm::mat4& projection);
     void drawChunk(Chunk* chunk, Shader* shader, const glm::mat4& view, const glm::mat4& projection);
 
+
+    //Debug
+    size_t totalVertices();
+    void setGreedyMesh(bool b);
+    bool getGreedyMesh() { return useGreedyMesh; }
 private:
     MeshRenderer meshRenderer; // Reusable mesh renderer for all meshes
     std::vector<std::shared_ptr<ChunkRenderer>> chunkRenderers;
     //    void drawChunk(Chunk* chunk, Shader* shader, const glm::mat4& view, const glm::mat4& projection);
+
+
+    bool useGreedyMesh = true; // default
 };
 
 #endif

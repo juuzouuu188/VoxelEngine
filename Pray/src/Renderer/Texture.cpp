@@ -37,6 +37,19 @@ Texture::Texture(
     }
   
 
+    //Auto-detect the format based on numColCh
+    if (numColCh == 1)
+        format = GL_RED;
+    else if (numColCh == 3)
+        format = GL_RGB;
+    else if (numColCh == 4)
+        format = GL_RGBA;
+    else {
+        std::cerr << "Unsupported number of channels (" << numColCh << ") in texture: " << image << std::endl;
+        stbi_image_free(bytes);
+        return;
+    }
+   
 
     // Generates an OpenGL texture object
     glGenTextures(1, &ID);

@@ -207,3 +207,22 @@ int ChunkManager::GetChunkZ(const std::shared_ptr<Chunk>& chunk) {
     }
     return 0;
 }
+
+void ChunkManager::deleteAllChunks() {
+    m_loadList.clear();
+    m_setupList.clear();
+    m_rebuildList.clear();
+    m_unloadList.clear();
+    m_visibilityList.clear();
+    m_renderList.clear();
+
+    chunks.clear();
+
+}
+
+//std::vector<std::shared_ptr<Chunk>> m_loadList;
+//std::vector<std::shared_ptr<Chunk>> m_setupList;
+//std::vector<std::shared_ptr<Chunk>> m_rebuildList;
+//std::vector<std::shared_ptr<Chunk>> m_unloadList;
+//std::vector<std::shared_ptr<Chunk>> m_visibilityList;
+//std::vector<std::shared_ptr<Chunk>> m_renderList;
