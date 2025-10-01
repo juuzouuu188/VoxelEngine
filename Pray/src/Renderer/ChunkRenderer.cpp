@@ -173,27 +173,33 @@ void ChunkRenderer::BuildGreedyMeshes() {
             GLuint idx = indexCountByType[type];
             glm::vec3 color(1.0f);
 
+            // Calculate proper UV coordinates
             glm::vec2 uv0, uv1, uv2, uv3;
 
-            // compute UVs for tiling per quad size
-            if (normal.x != 0) {  // ±X faces
-                uv0 = glm::vec2(0, 0);
-                uv1 = glm::vec2(0, height);
-                uv2 = glm::vec2(width, height);
-                uv3 = glm::vec2(width, 0);
+            if (normal.x != 0) {
+                uv0 = glm::vec2(p0.z, p0.y);
+                uv1 = glm::vec2(p1.z, p1.y);
+                uv2 = glm::vec2(p2.z, p2.y);
+                uv3 = glm::vec2(p3.z, p3.y);
             }
-            else if (normal.y != 0) {  // ±Y faces
-                uv0 = glm::vec2(0, 0);
-                uv1 = glm::vec2(width, 0);
-                uv2 = glm::vec2(width, height);
-                uv3 = glm::vec2(0, height);
+            else if (normal.y != 0) {
+                uv0 = glm::vec2(p0.x, p0.z);
+                uv1 = glm::vec2(p1.x, p1.z);
+                uv2 = glm::vec2(p2.x, p2.z);
+                uv3 = glm::vec2(p3.x, p3.z);
             }
-            else if (normal.z != 0) {  // ±Z faces
-                uv0 = glm::vec2(0, 0);
-                uv1 = glm::vec2(width, 0);
-                uv2 = glm::vec2(width, height);
-                uv3 = glm::vec2(0, height);
+            else if (normal.z != 0) {
+                uv0 = glm::vec2(p0.x, p0.y);
+                uv1 = glm::vec2(p1.x, p1.y);
+                uv2 = glm::vec2(p2.x, p2.y);
+                uv3 = glm::vec2(p3.x, p3.y);
             }
+
+            float uvScale = 1.0f / cubeSize;
+            uv0 *= uvScale;
+            uv1 *= uvScale;
+            uv2 *= uvScale;
+            uv3 *= uvScale;
 
             verticesByType[type].push_back({ p0, normal, color, uv0 });
             verticesByType[type].push_back({ p1, normal, color, uv1 });
@@ -210,143 +216,161 @@ void ChunkRenderer::BuildGreedyMeshes() {
             indexCountByType[type] += 4;
         };
 
+    // ========== PROPER GREEDY MESHING ==========
     auto greedyPlane = [&](glm::vec3 normal) {
-        int u1, u2, fixedAxis;
-        if (normal.x != 0) { fixedAxis = 0; u1 = 1; u2 = 2; }
-        else if (normal.y != 0) { fixedAxis = 1; u1 = 0; u2 = 2; }
-        else { fixedAxis = 2; u1 = 0; u2 = 1; }
+        int u, v, fixedAxis;
+        if (normal.x != 0) { fixedAxis = 0; u = 1; v = 2; }
+        else if (normal.y != 0) { fixedAxis = 1; u = 0; v = 2; }
+        else { fixedAxis = 2; u = 0; v = 1; }
 
         int sizeFixed = (fixedAxis == 0) ? CHUNK_SIZE : (fixedAxis == 1) ? CHUNK_HEIGHT : CHUNK_SIZE;
-        int sizeU1 = (u1 == 0) ? CHUNK_SIZE : (u1 == 1) ? CHUNK_HEIGHT : CHUNK_SIZE;
-        int sizeU2 = (u2 == 0) ? CHUNK_SIZE : (u2 == 1) ? CHUNK_HEIGHT : CHUNK_SIZE;
+        int sizeU = (u == 0) ? CHUNK_SIZE : (u == 1) ? CHUNK_HEIGHT : CHUNK_SIZE;
+        int sizeV = (v == 0) ? CHUNK_SIZE : (v == 1) ? CHUNK_HEIGHT : CHUNK_SIZE;
 
-        std::vector<CubeType> mask(sizeU1 * sizeU2);
-        std::vector<bool> processed(sizeU1 * sizeU2);
+        // Process each slice along the fixed axis
+        for (int fixed = 0; fixed < sizeFixed; ++fixed) {
+            std::vector<CubeType> mask(sizeU * sizeV, CubeType_Air);
+            std::vector<bool> merged(sizeU * sizeV, false);
 
-        for (int d = 0; d < sizeFixed; ++d) {
-            // build mask
-            for (int i = 0; i < sizeU1; ++i) {
-                for (int j = 0; j < sizeU2; ++j) {
-                    int x = (fixedAxis == 0) ? d : (u1 == 0 ? i : j);
-                    int y = (fixedAxis == 1) ? d : (u1 == 1 ? i : j);
-                    int z = (fixedAxis == 2) ? d : (u1 == 2 ? i : j);
+            // Build mask for this slice - check face visibility in the CURRENT direction
+            for (int i = 0; i < sizeU; ++i) {
+                for (int j = 0; j < sizeV; ++j) {
+                    int x = (fixedAxis == 0) ? fixed : (u == 0 ? i : j);
+                    int y = (fixedAxis == 1) ? fixed : (u == 1 ? i : j);
+                    int z = (fixedAxis == 2) ? fixed : (u == 2 ? i : j);
 
                     Cube& cube = cubes[x][y][z];
+                    if (cube.isAir()) {
+                        mask[i * sizeV + j] = CubeType_Air;
+                        continue;
+                    }
 
+                    // Check if this specific face is visible in the current direction
                     int nx = x + (int)normal.x;
                     int ny = y + (int)normal.y;
                     int nz = z + (int)normal.z;
-                    bool neighborExists = false;
+
+                    bool isFaceVisible = false;
                     if (nx >= 0 && nx < CHUNK_SIZE &&
                         ny >= 0 && ny < CHUNK_HEIGHT &&
                         nz >= 0 && nz < CHUNK_SIZE) {
-                        neighborExists = !cubes[nx][ny][nz].isAir();
+                        isFaceVisible = cubes[nx][ny][nz].isAir();
+                    }
+                    else {
+                        isFaceVisible = true; // Chunk boundary
                     }
 
-                    mask[i * sizeU2 + j] = (!cube.isAir() && !neighborExists) ? cube.getType() : CubeType_Air;
-                    processed[i * sizeU2 + j] = false;
+                    mask[i * sizeV + j] = isFaceVisible ? cube.getType() : CubeType_Air;
                 }
             }
 
-            // greedy merge
-            for (int i = 0; i < sizeU1; ++i) {
-                for (int j = 0; j < sizeU2; ++j) {
-                    if (mask[i * sizeU2 + j] == CubeType_Air || processed[i * sizeU2 + j])
+            // TRUE GREEDY MESHING ALGORITHM
+            for (int j = 0; j < sizeV; ++j) {
+                for (int i = 0; i < sizeU; ++i) {
+                    if (mask[i * sizeV + j] == CubeType_Air || merged[i * sizeV + j]) {
                         continue;
+                    }
 
-                    CubeType type = mask[i * sizeU2 + j];
+                    CubeType currentType = mask[i * sizeV + j];
 
+                    // Find maximum width for this row
                     int width = 1;
-                    while (i + width < sizeU1 &&
-                        mask[(i + width) * sizeU2 + j] == type &&
-                        !processed[(i + width) * sizeU2 + j]) {
+                    while (i + width < sizeU &&
+                        mask[(i + width) * sizeV + j] == currentType &&
+                        !merged[(i + width) * sizeV + j]) {
                         width++;
                     }
 
+                    // Find maximum height for this width
                     int height = 1;
-                    bool done = false;
-                    while (j + height < sizeU2 && !done) {
-                        for (int k = 0; k < width; ++k) {
-                            if (mask[(i + k) * sizeU2 + (j + height)] != type ||
-                                processed[(i + k) * sizeU2 + (j + height)]) {
-                                done = true;
+                    bool canExtendHeight = true;
+
+                    for (int h = 1; j + h < sizeV && canExtendHeight; h++) {
+                        // Check if entire next row is mergeable
+                        for (int w = 0; w < width; w++) {
+                            int idx = (i + w) * sizeV + (j + h);
+                            if (mask[idx] != currentType || merged[idx]) {
+                                canExtendHeight = false;
                                 break;
                             }
                         }
-                        if (!done) height++;
+                        if (canExtendHeight) {
+                            height++;
+                        }
                     }
 
-                    // mark processed
-                    for (int dx = 0; dx < width; ++dx)
-                        for (int dy = 0; dy < height; ++dy)
-                            processed[(i + dx) * sizeU2 + (j + dy)] = true;
+                    // Mark all positions in this rectangle as merged
+                    for (int w = 0; w < width; w++) {
+                        for (int h = 0; h < height; h++) {
+                            merged[(i + w) * sizeV + (j + h)] = true;
+                        }
+                    }
 
-                    // build quad in world space
+                    // Build the merged quad
                     glm::vec3 pos(0.0f);
-                    pos[fixedAxis] = d;
-                    pos[u1] = i;
-                    pos[u2] = j;
+                    pos[fixedAxis] = fixed;
+                    pos[u] = i;
+                    pos[v] = j;
                     pos *= cubeSize;
                     pos += chunkWorldOffset;
 
-                    float w = width * cubeSize;
-                    float h = height * cubeSize;
+                    float quadWidth = width * cubeSize;
+                    float quadHeight = height * cubeSize;
 
                     glm::vec3 p0, p1, p2, p3;
 
-                    // handle quads per normal orientation
-                    if (normal.x == 1) {       // +X face
+                    if (normal.x == 1) {
                         p0 = pos + glm::vec3(cubeSize, 0, 0);
-                        p1 = p0 + glm::vec3(0, 0, h);
-                        p2 = p1 + glm::vec3(0, w, 0);
-                        p3 = p0 + glm::vec3(0, w, 0);
+                        p1 = p0 + glm::vec3(0, 0, quadHeight);
+                        p2 = p1 + glm::vec3(0, quadWidth, 0);
+                        p3 = p0 + glm::vec3(0, quadWidth, 0);
                     }
                     else if (normal.x == -1) {
                         p0 = pos;
-                        p1 = p0 + glm::vec3(0, w, 0);
-                        p2 = p1 + glm::vec3(0, 0, h);
-                        p3 = p0 + glm::vec3(0, 0, h);
+                        p1 = p0 + glm::vec3(0, quadWidth, 0);
+                        p2 = p1 + glm::vec3(0, 0, quadHeight);
+                        p3 = p0 + glm::vec3(0, 0, quadHeight);
                     }
                     else if (normal.y == 1) {
                         p0 = pos + glm::vec3(0, cubeSize, 0);
-                        p1 = p0 + glm::vec3(w, 0, 0);
-                        p2 = p1 + glm::vec3(0, 0, h);
-                        p3 = p0 + glm::vec3(0, 0, h);
+                        p1 = p0 + glm::vec3(quadWidth, 0, 0);
+                        p2 = p1 + glm::vec3(0, 0, quadHeight);
+                        p3 = p0 + glm::vec3(0, 0, quadHeight);
                     }
                     else if (normal.y == -1) {
                         p0 = pos;
-                        p1 = p0 + glm::vec3(0, 0, h);
-                        p2 = p1 + glm::vec3(w, 0, 0);
-                        p3 = p0 + glm::vec3(w, 0, 0);
+                        p1 = p0 + glm::vec3(0, 0, quadHeight);
+                        p2 = p1 + glm::vec3(quadWidth, 0, 0);
+                        p3 = p0 + glm::vec3(quadWidth, 0, 0);
                     }
                     else if (normal.z == 1) {
                         p0 = pos + glm::vec3(0, 0, cubeSize);
-                        p1 = p0 + glm::vec3(w, 0, 0);
-                        p2 = p1 + glm::vec3(0, h, 0);
-                        p3 = p0 + glm::vec3(0, h, 0);
+                        p1 = p0 + glm::vec3(quadWidth, 0, 0);
+                        p2 = p1 + glm::vec3(0, quadHeight, 0);
+                        p3 = p0 + glm::vec3(0, quadHeight, 0);
                     }
                     else if (normal.z == -1) {
                         p0 = pos;
-                        p1 = p0 + glm::vec3(w, 0, 0);
-                        p2 = p1 + glm::vec3(0, h, 0);
-                        p3 = p0 + glm::vec3(0, h, 0);
+                        p1 = p0 + glm::vec3(quadWidth, 0, 0);
+                        p2 = p1 + glm::vec3(0, quadHeight, 0);
+                        p3 = p0 + glm::vec3(0, quadHeight, 0);
                     }
 
-                    addQuad(type, p0, p1, p2, p3, normal, width, height);
+                    addQuad(currentType, p0, p1, p2, p3, normal, width, height);
                 }
             }
         }
         };
 
-    // build all 6 face directions
-    greedyPlane(glm::vec3(1, 0, 0));
-    greedyPlane(glm::vec3(-1, 0, 0));
-    greedyPlane(glm::vec3(0, 1, 0));
-    greedyPlane(glm::vec3(0, -1, 0));
-    greedyPlane(glm::vec3(0, 0, 1));
-    greedyPlane(glm::vec3(0, 0, -1));
+    // Process all 6 directions
+    greedyPlane(glm::vec3(1, 0, 0));  // +X
+    greedyPlane(glm::vec3(-1, 0, 0)); // -X
+    greedyPlane(glm::vec3(0, 1, 0));  // +Y
+    greedyPlane(glm::vec3(0, -1, 0)); // -Y
+    greedyPlane(glm::vec3(0, 0, 1));  // +Z
+    greedyPlane(glm::vec3(0, 0, -1)); // -Z
 
-    // create final meshes
+    // Create final meshes
     for (auto& pair : verticesByType) {
         CubeType type = pair.first;
         auto& verts = pair.second;
