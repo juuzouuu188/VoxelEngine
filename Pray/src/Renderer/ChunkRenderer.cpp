@@ -142,7 +142,6 @@ void ChunkRenderer::BuildMeshes() {
     }
 }
 
-
 void ChunkRenderer::BuildGreedyMeshes() {
     meshes.clear();
 
@@ -176,42 +175,24 @@ void ChunkRenderer::BuildGreedyMeshes() {
 
             glm::vec2 uv0, uv1, uv2, uv3;
 
-            // Compute UVs depending on face orientation
-            if (normal.x == 1) {         // +X
+            // compute UVs for tiling per quad size
+            if (normal.x != 0) {  // ±X faces
                 uv0 = glm::vec2(0, 0);
                 uv1 = glm::vec2(0, height);
                 uv2 = glm::vec2(width, height);
                 uv3 = glm::vec2(width, 0);
             }
-            else if (normal.x == -1) {   // -X
+            else if (normal.y != 0) {  // ±Y faces
                 uv0 = glm::vec2(0, 0);
                 uv1 = glm::vec2(width, 0);
                 uv2 = glm::vec2(width, height);
                 uv3 = glm::vec2(0, height);
             }
-            else if (normal.y == 1) {    // +Y
+            else if (normal.z != 0) {  // ±Z faces
                 uv0 = glm::vec2(0, 0);
                 uv1 = glm::vec2(width, 0);
                 uv2 = glm::vec2(width, height);
                 uv3 = glm::vec2(0, height);
-            }
-            else if (normal.y == -1) {   // -Y
-                uv0 = glm::vec2(0, 0);
-                uv1 = glm::vec2(0, height);
-                uv2 = glm::vec2(width, height);
-                uv3 = glm::vec2(width, 0);
-            }
-            else if (normal.z == 1) {    // +Z
-                uv0 = glm::vec2(0, 0);
-                uv1 = glm::vec2(width, 0);
-                uv2 = glm::vec2(width, height);
-                uv3 = glm::vec2(0, height);
-            }
-            else if (normal.z == -1) {   // -Z
-                uv0 = glm::vec2(0, 0);
-                uv1 = glm::vec2(0, height);
-                uv2 = glm::vec2(width, height);
-                uv3 = glm::vec2(width, 0);
             }
 
             verticesByType[type].push_back({ p0, normal, color, uv0 });
@@ -229,10 +210,7 @@ void ChunkRenderer::BuildGreedyMeshes() {
             indexCountByType[type] += 4;
         };
 
-
-    // Greedy meshing per face direction
     auto greedyPlane = [&](glm::vec3 normal) {
-        // Choose plane orientation
         int u1, u2, fixedAxis;
         if (normal.x != 0) { fixedAxis = 0; u1 = 1; u2 = 2; }
         else if (normal.y != 0) { fixedAxis = 1; u1 = 0; u2 = 2; }
@@ -246,7 +224,7 @@ void ChunkRenderer::BuildGreedyMeshes() {
         std::vector<bool> processed(sizeU1 * sizeU2);
 
         for (int d = 0; d < sizeFixed; ++d) {
-            // Build mask for this slice
+            // build mask
             for (int i = 0; i < sizeU1; ++i) {
                 for (int j = 0; j < sizeU2; ++j) {
                     int x = (fixedAxis == 0) ? d : (u1 == 0 ? i : j);
@@ -255,7 +233,6 @@ void ChunkRenderer::BuildGreedyMeshes() {
 
                     Cube& cube = cubes[x][y][z];
 
-                    // Neighbor check (same as BuildMeshes)
                     int nx = x + (int)normal.x;
                     int ny = y + (int)normal.y;
                     int nz = z + (int)normal.z;
@@ -266,16 +243,12 @@ void ChunkRenderer::BuildGreedyMeshes() {
                         neighborExists = !cubes[nx][ny][nz].isAir();
                     }
 
-                    CubeType t = CubeType_Air;
-                    if (!cube.isAir() && !neighborExists)
-                        t = cube.getType();
-
-                    mask[i * sizeU2 + j] = t;
+                    mask[i * sizeU2 + j] = (!cube.isAir() && !neighborExists) ? cube.getType() : CubeType_Air;
                     processed[i * sizeU2 + j] = false;
                 }
             }
 
-            // Greedy merge
+            // greedy merge
             for (int i = 0; i < sizeU1; ++i) {
                 for (int j = 0; j < sizeU2; ++j) {
                     if (mask[i * sizeU2 + j] == CubeType_Air || processed[i * sizeU2 + j])
@@ -283,7 +256,6 @@ void ChunkRenderer::BuildGreedyMeshes() {
 
                     CubeType type = mask[i * sizeU2 + j];
 
-                    // Find width (along u1)
                     int width = 1;
                     while (i + width < sizeU1 &&
                         mask[(i + width) * sizeU2 + j] == type &&
@@ -291,7 +263,6 @@ void ChunkRenderer::BuildGreedyMeshes() {
                         width++;
                     }
 
-                    // Find height (along u2)
                     int height = 1;
                     bool done = false;
                     while (j + height < sizeU2 && !done) {
@@ -305,12 +276,12 @@ void ChunkRenderer::BuildGreedyMeshes() {
                         if (!done) height++;
                     }
 
-                    // Mark processed
+                    // mark processed
                     for (int dx = 0; dx < width; ++dx)
                         for (int dy = 0; dy < height; ++dy)
                             processed[(i + dx) * sizeU2 + (j + dy)] = true;
 
-                    // Build quad origin (base cube corner in world space)
+                    // build quad in world space
                     glm::vec3 pos(0.0f);
                     pos[fixedAxis] = d;
                     pos[u1] = i;
@@ -318,58 +289,56 @@ void ChunkRenderer::BuildGreedyMeshes() {
                     pos *= cubeSize;
                     pos += chunkWorldOffset;
 
-                    // world-space extents in each direction
                     float w = width * cubeSize;
                     float h = height * cubeSize;
 
                     glm::vec3 p0, p1, p2, p3;
 
-                    // Use same winding/orientation as BuildMeshes, but scaled by width/height.
-                    if (normal.x == 1) {       // +X face (fixed x at pos.x + cubeSize)
-                        p0 = pos + glm::vec3(cubeSize, 0.0f, 0.0f);
-                        p1 = p0 + glm::vec3(0.0f, 0.0f, h);
-                        p2 = p1 + glm::vec3(0.0f, w, 0.0f);
-                        p3 = p0 + glm::vec3(0.0f, w, 0.0f);
+                    // handle quads per normal orientation
+                    if (normal.x == 1) {       // +X face
+                        p0 = pos + glm::vec3(cubeSize, 0, 0);
+                        p1 = p0 + glm::vec3(0, 0, h);
+                        p2 = p1 + glm::vec3(0, w, 0);
+                        p3 = p0 + glm::vec3(0, w, 0);
                     }
-                    else if (normal.x == -1) { // -X face
+                    else if (normal.x == -1) {
                         p0 = pos;
-                        p1 = p0 + glm::vec3(0.0f, w, 0.0f);
-                        p2 = p1 + glm::vec3(0.0f, 0.0f, h);
-                        p3 = p0 + glm::vec3(0.0f, 0.0f, h);
+                        p1 = p0 + glm::vec3(0, w, 0);
+                        p2 = p1 + glm::vec3(0, 0, h);
+                        p3 = p0 + glm::vec3(0, 0, h);
                     }
-                    else if (normal.y == 1) {  // +Y face
-                        p0 = pos + glm::vec3(0.0f, cubeSize, 0.0f);
-                        p1 = p0 + glm::vec3(w, 0.0f, 0.0f);
-                        p2 = p1 + glm::vec3(0.0f, 0.0f, h);
-                        p3 = p0 + glm::vec3(0.0f, 0.0f, h);
+                    else if (normal.y == 1) {
+                        p0 = pos + glm::vec3(0, cubeSize, 0);
+                        p1 = p0 + glm::vec3(w, 0, 0);
+                        p2 = p1 + glm::vec3(0, 0, h);
+                        p3 = p0 + glm::vec3(0, 0, h);
                     }
-                    else if (normal.y == -1) { // -Y face
+                    else if (normal.y == -1) {
                         p0 = pos;
-                        p1 = p0 + glm::vec3(0.0f, 0.0f, h);
-                        p2 = p1 + glm::vec3(w, 0.0f, 0.0f);
-                        p3 = p0 + glm::vec3(w, 0.0f, 0.0f);
+                        p1 = p0 + glm::vec3(0, 0, h);
+                        p2 = p1 + glm::vec3(w, 0, 0);
+                        p3 = p0 + glm::vec3(w, 0, 0);
                     }
-                    else if (normal.z == 1) {  // +Z face
-                        p0 = pos + glm::vec3(0.0f, 0.0f, cubeSize);
-                        p1 = p0 + glm::vec3(w, 0.0f, 0.0f);
-                        p2 = p1 + glm::vec3(0.0f, h, 0.0f);
-                        p3 = p0 + glm::vec3(0.0f, h, 0.0f);
+                    else if (normal.z == 1) {
+                        p0 = pos + glm::vec3(0, 0, cubeSize);
+                        p1 = p0 + glm::vec3(w, 0, 0);
+                        p2 = p1 + glm::vec3(0, h, 0);
+                        p3 = p0 + glm::vec3(0, h, 0);
                     }
-                    else if (normal.z == -1) { // -Z face
+                    else if (normal.z == -1) {
                         p0 = pos;
-                        p1 = p0 + glm::vec3(w, 0.0f, 0.0f);
-                        p2 = p1 + glm::vec3(0.0f, h, 0.0f);
-                        p3 = p0 + glm::vec3(0.0f, h, 0.0f);
+                        p1 = p0 + glm::vec3(w, 0, 0);
+                        p2 = p1 + glm::vec3(0, h, 0);
+                        p3 = p0 + glm::vec3(0, h, 0);
                     }
 
-                    // IMPORTANT: pass width/height (in cubes) for tiled UVs
                     addQuad(type, p0, p1, p2, p3, normal, width, height);
                 }
             }
         }
         };
 
-    // Build planes for all 6 directions
+    // build all 6 face directions
     greedyPlane(glm::vec3(1, 0, 0));
     greedyPlane(glm::vec3(-1, 0, 0));
     greedyPlane(glm::vec3(0, 1, 0));
@@ -377,7 +346,7 @@ void ChunkRenderer::BuildGreedyMeshes() {
     greedyPlane(glm::vec3(0, 0, 1));
     greedyPlane(glm::vec3(0, 0, -1));
 
-    // Build final meshes per CubeType (just like BuildMeshes)
+    // create final meshes
     for (auto& pair : verticesByType) {
         CubeType type = pair.first;
         auto& verts = pair.second;

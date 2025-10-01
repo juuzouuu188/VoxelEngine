@@ -21,6 +21,7 @@ public:
 	void beginFrame();
 	void endFrame();
 
+	
 private:
 	bool wireframeMode = false; // default off
 

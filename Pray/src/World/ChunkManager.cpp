@@ -209,15 +209,28 @@ int ChunkManager::GetChunkZ(const std::shared_ptr<Chunk>& chunk) {
 }
 
 void ChunkManager::deleteAllChunks() {
-    m_loadList.clear();
-    m_setupList.clear();
-    m_rebuildList.clear();
-    m_unloadList.clear();
-    m_visibilityList.clear();
-    m_renderList.clear();
+    // Helper lambda to reset all shared_ptrs in a vector
+    auto resetVector = [](auto& vec) {
+        for (auto& ptr : vec) ptr.reset();
+        vec.clear();
+        };
+
+    // Reset all stage vectors
+    resetVector(m_loadList);
+    resetVector(m_setupList);
+    resetVector(m_rebuildList);
+    resetVector(m_unloadList);
+    resetVector(m_visibilityList);
+    resetVector(m_renderList);
+
+    // Reset all chunks in the main storage
+    for (auto& pair : chunks) {
+        if (pair.second) {
+            pair.second->UnLoad();
+        }
+    }
 
     chunks.clear();
-
 }
 
 //std::vector<std::shared_ptr<Chunk>> m_loadList;

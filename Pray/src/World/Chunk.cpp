@@ -28,6 +28,8 @@ void Chunk::UnLoad() {
         delete[] m_pCubes;
         m_pCubes = nullptr;
     }
+
+
     // Reset state flags
     isLoaded = false;
     _isSetUp = false;

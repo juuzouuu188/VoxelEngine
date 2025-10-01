@@ -58,6 +58,7 @@ size_t MasterRenderer::totalVertices() {
             count += cr->getVertexCount();
         }
     }
+
     return count;
 }
 
@@ -68,5 +69,12 @@ size_t MasterRenderer::totalVertices() {
 //}
 
 void MasterRenderer::setGreedyMesh(bool b) {
-    useGreedyMesh = b;
+
+    if (useGreedyMesh != b) {
+        useGreedyMesh = b;
+
+        // Delete all chunk renderers so they can be rebuilt with the new mesh type
+        chunkRenderers.clear();
+    }
+
 }
